@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@source "../data";
+
+@theme {
+  --font-manrope: "Manrope", sans-serif;
+}
+
+
+.banner-shape {
+  width: 600px;
+  height: 250px;
+  background: #f3f6fb;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.banner-shape::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -120px;
+  width: 900px;
+  height: 300px;
+  background: #f3f6fb;
+  border-radius: 50%;
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #E2E8F0;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #CBD5E1;
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #E2E8F0 transparent;
+  }
+}

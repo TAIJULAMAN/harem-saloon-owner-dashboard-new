@@ -1,0 +1,178 @@
+"use client";
+
+import React, { useState } from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { ChevronDown, Info } from "lucide-react";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+const demoDataByPeriod = {
+  "This Year": {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Hair Services",
+        data: [150, 160, 155, 180, 200, 220, 250, 240, 210, 190, 170, 230],
+        borderColor: "#635BFF",
+        backgroundColor: "#635BFF",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      },
+      {
+        label: "Nail Services",
+        data: [80, 85, 90, 110, 130, 150, 160, 140, 120, 110, 100, 120],
+        borderColor: "#EC4899",
+        backgroundColor: "#EC4899",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      },
+      {
+        label: "Spa & Massage",
+        data: [40, 45, 50, 60, 70, 80, 90, 85, 75, 65, 55, 70],
+        borderColor: "#F59E0B",
+        backgroundColor: "#F59E0B",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      }
+    ],
+  },
+  "Last Year": {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Hair Services",
+        data: [130, 140, 145, 160, 180, 200, 220, 210, 190, 170, 160, 210],
+        borderColor: "#635BFF",
+        backgroundColor: "#635BFF",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      },
+      {
+        label: "Nail Services",
+        data: [70, 75, 80, 100, 110, 130, 140, 120, 110, 100, 90, 110],
+        borderColor: "#EC4899",
+        backgroundColor: "#EC4899",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      },
+      {
+        label: "Spa & Massage",
+        data: [30, 35, 40, 50, 60, 70, 80, 75, 65, 55, 45, 60],
+        borderColor: "#F59E0B",
+        backgroundColor: "#F59E0B",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+      }
+    ],
+  }
+};
+
+export default function ServiceTrendsChart() {
+  const [selectedPeriod, setSelectedPeriod] = useState("This Year");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const chartData = demoDataByPeriod[selectedPeriod as keyof typeof demoDataByPeriod] || demoDataByPeriod["This Year"];
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom' as const,
+        labels: {
+          usePointStyle: true,
+          boxWidth: 8,
+          font: { family: "'Manrope', sans-serif", size: 11 }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: "#94A3B8", font: { size: 10, family: "'Manrope', sans-serif" } },
+      },
+      y: {
+        grid: { color: "#F1F5F9" },
+        border: { display: false },
+        ticks: { 
+          color: "#94A3B8", 
+          font: { size: 10, family: "'Manrope', sans-serif" },
+        },
+        beginAtZero: true
+      },
+    },
+  };
+
+  const availablePeriods = ["This Year", "Last Year"];
+
+  return (
+    <div className="flex-1 w-full bg-white p-4 sm:p-6 rounded-lg border border-[#E2E8F0] shadow-[0px_4px_20px_0px_rgba(0,0,0,0.02)] flex flex-col">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
+        <div className="w-full sm:w-auto">
+          <h2 className="text-[16px] font-bold text-[#1E293B] flex items-center gap-2">
+            Service Trends Over Time
+            <div className="group relative cursor-pointer">
+              <Info className="w-4 h-4 text-gray-400 hover:text-[#635BFF] transition-colors" />
+              <div className="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 bottom-full mb-2 hidden group-hover:block w-48 bg-gray-900 text-white text-[11px] p-2 rounded-lg shadow-xl z-10">
+                Actionable Insight: Identify seasonal trends. E.g. Prepare inventory if Keratin peaks in winter.
+              </div>
+            </div>
+          </h2>
+          <p className="text-[12px] text-[#94A3B8] font-medium mt-1">Monthly booking volume by major categories</p>
+        </div>
+        
+        <div className="relative w-full sm:w-auto flex justify-end">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-2 px-3 py-1.5 border border-[#E2E8F0] rounded-lg text-[12px] font-semibold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
+          >
+            {selectedPeriod} <ChevronDown className="w-3 h-3 text-[#64748B]" />
+          </button>
+
+          {isMenuOpen && (
+            <div className="absolute right-0 left-0 sm:left-auto top-full mt-2 w-full sm:w-32 bg-white border border-[#E2E8F0] rounded-lg shadow-lg z-10 py-1">
+              {availablePeriods.map(period => (
+                <button
+                  key={period}
+                  onClick={() => {
+                    setSelectedPeriod(period);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 text-[12px] hover:bg-[#F8FAFC] transition-colors ${selectedPeriod === period ? 'text-[#635BFF] font-bold' : 'text-[#64748B] font-medium'}`}
+                >
+                  {period}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex-1 min-h-[280px] w-full relative my-4">
+        <Line data={chartData} options={options} />
+      </div>
+    </div>
+  );
+}
