@@ -98,7 +98,7 @@ export default function PeakHoursHeatmap() {
   };
 
   return (
-    <div className="flex-1 w-full bg-white p-4 sm:p-6 rounded-lg border border-[#E2E8F0] shadow-[0px_4px_20px_0px_rgba(0,0,0,0.02)] overflow-hidden">
+    <div className="flex-1 w-full bg-white p-4 sm:p-6 rounded-lg border border-[#E2E8F0] shadow-[0px_4px_20px_0px_rgba(0,0,0,0.02)]">
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
         <div className="w-full sm:w-auto">
           <h2 className="text-[16px] font-bold text-[#1E293B] flex items-center gap-2">
