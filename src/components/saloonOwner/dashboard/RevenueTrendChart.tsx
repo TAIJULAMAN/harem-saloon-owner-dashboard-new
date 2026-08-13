@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
+import { ChartOptions } from "chart.js";
 import { ChevronDown } from "lucide-react";
 import ExportReportModal from "./ExportReportModal";
 
@@ -33,23 +34,29 @@ export default function RevenueTrendChart() {
     ],
   };
 
-  const revenueOptions = {
+  const revenueOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: "#FFFFFF",
-        titleColor: "#1E293B",
-        bodyColor: "#1E293B",
-        borderColor: "#E2E8F0",
-        borderWidth: 1,
-        padding: 12,
+        enabled: true,
+        backgroundColor: "#1E293B",
+        titleFont: { size: 13, family: "'Manrope', sans-serif" },
+        bodyFont: { size: 12, family: "'Manrope', sans-serif" },
+        padding: 10,
+        cornerRadius: 8,
         displayColors: true,
+        mode: 'index',
+        intersect: false,
         callbacks: {
-          label: (context: any) => `Revenue: € ${context.raw}K`
+          label: (context) => `Revenue: € ${context.raw}K`
         }
       }
+    },
+    interaction: {
+      mode: 'index',
+      intersect: false,
     },
     scales: {
       x: {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Calendar as CalendarIcon } from "lucide-react";
+import { X, Calendar as CalendarIcon, Clock } from "lucide-react";
 
 interface SchedulePostModalProps {
   isOpen: boolean;
@@ -18,24 +18,27 @@ export function SchedulePostModal({ isOpen, onClose, onConfirm, initialDate, ini
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#1E293B]/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg w-full max-w-lg flex flex-col relative shadow-xl">
+    <div className="fixed inset-0 bg-[#343C46]/80 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-[8px] w-full max-w-[560px] flex flex-col relative shadow-2xl font-sans">
+        
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 pb-2">
-          <h2 className="text-[16px] font-bold text-[#1E293B]">Schedule Post</h2>
+        <div className="flex items-center justify-between p-6">
+          <h2 className="text-[18px] font-bold text-[#1C2024]">Schedule Post</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F8FAFC] transition-colors text-[#64748B]"
+            className="text-[#8B929A] hover:text-[#1C2024] transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" strokeWidth={1.5} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="px-6 pb-24">
+          <div className="grid grid-cols-2 gap-4">
+            
+            {/* Date Input */}
             <div>
-              <label className="block text-[12px] font-bold text-[#1E293B] mb-2">
+              <label className="block text-[13px] font-bold text-[#1C2024] mb-2">
                 Date *
               </label>
               <div className="relative">
@@ -43,43 +46,47 @@ export function SchedulePostModal({ isOpen, onClose, onConfirm, initialDate, ini
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full h-11 px-3 rounded-lg border border-[#E2E8F0] focus:outline-none focus:border-[#635BFF] transition-colors text-sm text-[#1E293B] appearance-none"
-                  placeholder="Select date"
+                  className="w-full h-11 px-4 rounded-[6px] border border-[#E6E8EB] focus:outline-none focus:border-[#6B4EFF] focus:ring-1 focus:ring-[#6B4EFF] transition-colors text-[14px] text-[#343C46]"
+                  placeholder="mm/dd/yyyy"
                 />
-                <CalendarIcon className="w-4 h-4 text-[#1E293B] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
 
+            {/* Time Input */}
             <div>
-              <label className="block text-[12px] font-bold text-[#1E293B] mb-2">
+              <label className="block text-[13px] font-bold text-[#1C2024] mb-2">
                 Time *
               </label>
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="w-full h-11 px-3 rounded-lg border border-[#E2E8F0] focus:outline-none focus:border-[#635BFF] transition-colors text-sm text-[#1E293B]"
-                placeholder="Enter time"
-              />
+              <div className="relative">
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="w-full h-11 px-4 rounded-[6px] border border-[#E6E8EB] focus:outline-none focus:border-[#6B4EFF] focus:ring-1 focus:ring-[#6B4EFF] transition-colors text-[14px] text-[#343C46]"
+                  placeholder="--:-- --"
+                />
+              </div>
             </div>
+            
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-4 sm:p-6 pt-4 flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6 sm:mt-12">
+        <div className="px-6 py-6 flex items-center justify-end gap-3 rounded-b-[8px]">
           <button
             onClick={onClose}
-            className="w-full sm:w-auto px-6 py-2 rounded-lg border border-[#E2E8F0] text-[#64748B] font-bold text-sm hover:bg-[#F8FAFC] transition-colors flex items-center justify-center"
+            className="px-6 py-2.5 rounded-[6px] border border-[#E6E8EB] bg-white text-[#636C75] font-bold text-[14px] hover:bg-[#F9FAFB] hover:text-[#343C46] transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={() => onConfirm(date, time)}
-            className="w-full sm:w-auto px-6 py-2 rounded-lg bg-[#635BFF] text-white font-bold text-sm shadow-md hover:bg-[#5249EC] transition-colors flex items-center justify-center"
+            className="px-6 py-2.5 rounded-[6px] bg-[#6B4EFF] text-white font-bold text-[14px] hover:bg-[#5A3EE0] transition-colors"
           >
             Schedule
           </button>
         </div>
+        
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
+import { ChartOptions } from "chart.js";
 import { ChevronDown } from "lucide-react";
 import ExportReportModal from "./ExportReportModal";
 
@@ -11,7 +12,20 @@ export default function ClientsGrowthChart() {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const ClientsData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
     datasets: [
       {
         label: "Dataset 1",
@@ -36,21 +50,45 @@ export default function ClientsGrowthChart() {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
+    plugins: { 
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+        backgroundColor: "#1E293B",
+        titleFont: { size: 13, family: "'Manrope', sans-serif" },
+        bodyFont: { size: 12, family: "'Manrope', sans-serif" },
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: true,
+        mode: 'index',
+        intersect: false,
+      }
+    },
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: "#94A3B8", font: { size: 10, family: "'Manrope', sans-serif" } }
+        ticks: {
+          color: "#94A3B8",
+          font: { size: 10, family: "'Manrope', sans-serif" },
+        },
       },
       y: {
         grid: { color: "#F1F5F9" },
         border: { display: false },
-        ticks: { color: "#94A3B8", font: { size: 10, family: "'Manrope', sans-serif" }, stepSize: 50 },
+        ticks: {
+          color: "#94A3B8",
+          font: { size: 10, family: "'Manrope', sans-serif" },
+          stepSize: 50,
+        },
         min: 50,
-        max: 300
+        max: 300,
       },
     },
   };
@@ -66,7 +104,10 @@ export default function ClientsGrowthChart() {
       <div className="flex flex-col md:flex-row gap-2 justify-between items-start mb-8">
         <div>
           <h2 className="text-[16px] font-bold text-[#1E293B]">New Clients</h2>
-          <p className="text-[12px] text-[#94A3B8] font-medium mt-1">Last 12 Months <span className="text-[#10B981] font-bold">+15%</span></p>
+          <p className="text-[12px] text-[#94A3B8] font-medium mt-1">
+            Last 12 Months{" "}
+            <span className="text-[#10B981] font-bold">+15%</span>
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -74,19 +115,20 @@ export default function ClientsGrowthChart() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex items-center gap-2 px-3 py-1.5 border border-[#E2E8F0] rounded-lg text-[12px] font-semibold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors"
             >
-              {selectedPeriod} <ChevronDown className="w-3 h-3 text-[#64748B]" />
+              {selectedPeriod}{" "}
+              <ChevronDown className="w-3 h-3 text-[#64748B]" />
             </button>
 
             {isMenuOpen && (
               <div className="absolute right-0 top-full mt-1 w-24 bg-white border border-[#E2E8F0] rounded-lg shadow-lg z-10 py-1">
-                {availablePeriods.map(period => (
+                {availablePeriods.map((period) => (
                   <button
                     key={period}
                     onClick={() => {
                       setSelectedPeriod(period);
                       setIsMenuOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 text-[12px] hover:bg-[#F8FAFC] transition-colors ${selectedPeriod === period ? 'text-[#635BFF] font-bold' : 'text-[#64748B] font-medium'}`}
+                    className={`w-full text-left px-4 py-2 text-[12px] hover:bg-[#F8FAFC] transition-colors ${selectedPeriod === period ? "text-[#635BFF] font-bold" : "text-[#64748B] font-medium"}`}
                   >
                     {period}
                   </button>
@@ -103,7 +145,7 @@ export default function ClientsGrowthChart() {
         </div>
       </div>
       <div className="h-[250px] relative mt-4">
-        <Line data={ClientsData} options={options as any} />
+        <Line data={ClientsData} options={options} />
       </div>
 
       <ExportReportModal

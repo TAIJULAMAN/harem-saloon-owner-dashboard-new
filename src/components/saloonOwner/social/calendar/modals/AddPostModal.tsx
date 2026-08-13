@@ -1,17 +1,22 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   X,
   ChevronDown,
-  Bold,
-  Italic,
   Smile,
   Hash,
-  MapPin,
   Image as ImageIcon,
-  MousePointerClick,
-  Check
+  Plus,
+  Maximize2,
+  Tag,
+  Wand2,
+  Info,
+  Heart,
+  MessageCircle,
+  Share,
+  BarChart2,
+  Bookmark,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -23,335 +28,489 @@ interface AddPostModalProps {
 
 const ACCOUNTS = [
   {
-    id: "1",
-    name: "Maria Rodriguez",
-    handle: "@mariarodriguez",
-    platform: "in",
-    avatar: "/avatar/icon1.png",
+    id: "tw",
+    name: "X (Twitter)",
+    platform: "tw",
+    bg: "bg-white",
+    iconColor: "text-black",
+    icon: "𝕏",
   },
   {
-    id: "2",
-    name: "SalonFlow Official",
-    handle: "@salonflow",
+    id: "fb",
+    name: "Facebook",
+    platform: "fb",
+    bg: "bg-[#1877F2]",
+    iconColor: "text-white",
+    icon: "f",
+  },
+  {
+    id: "ig",
+    name: "Instagram",
     platform: "ig",
-    avatar: "/avatar/icon2.png",
-  }
+    bg: "bg-gradient-to-tr from-[#FFD600] via-[#FF0100] to-[#D500BA]",
+    iconColor: "text-white",
+    icon: "📷",
+  },
+  {
+    id: "in",
+    name: "LinkedIn",
+    platform: "in",
+    bg: "bg-[#0A66C2]",
+    iconColor: "text-white",
+    icon: "in",
+  },
+  {
+    id: "tk",
+    name: "TikTok",
+    platform: "tk",
+    bg: "bg-[#696969]",
+    iconColor: "text-white",
+    icon: "🎵",
+  },
+  {
+    id: "yt",
+    name: "YouTube",
+    platform: "yt",
+    bg: "bg-[#696969]",
+    iconColor: "text-white",
+    icon: "▶️",
+  },
 ];
+
+const EMOJIS = ["😀", "😂", "🥰", "😎", "🤔", "🙌", "🔥", "✨", "🎉", "💅"];
 
 export function AddPostModal({
   isOpen,
   onClose,
   onSchedule,
 }: AddPostModalProps) {
-  const [activeTab, setActiveTab] = useState<"Post" | "Reel" | "Story">("Post");
-  const [mediaState, setMediaState] = useState<"hidden" | "dropzone" | "uploaded">("hidden");
-  
-  // New States
+  const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([
+    "tw",
+    "fb",
+    "ig",
+    "in",
+  ]);
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [showLocationInput, setShowLocationInput] = useState(false);
   const [uploadedMediaUrl, setUploadedMediaUrl] = useState<string | null>(null);
-  
-  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState(ACCOUNTS[0]);
-  
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [aiGenerated, setAiGenerated] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!isOpen) return null;
 
-  const handleMediaClick = () => {
-    if (mediaState === "hidden") setMediaState("dropzone");
-    else if (mediaState === "dropzone") setMediaState("hidden");
+  const handleClose = () => {
+    setDescription("");
+    setUploadedMediaUrl(null);
+    setShowEmojiPicker(false);
+    setSelectedAccountIds(["tw", "fb", "ig", "in"]);
+    onClose();
   };
 
-  const handleDropzoneClick = () => {
-    fileInputRef.current?.click();
+  const toggleAccount = (id: string) => {
+    setSelectedAccountIds((prev) => {
+      if (prev.includes(id)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((a) => a !== id);
+      }
+      return [...prev, id];
+    });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (event) => {
         setUploadedMediaUrl(event.target?.result as string);
-        setMediaState("uploaded");
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
-  const removeMedia = () => {
-    setUploadedMediaUrl(null);
-    setMediaState("hidden");
-    if (fileInputRef.current) fileInputRef.current.value = "";
+  const insertAtCursor = (textToInsert: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    setDescription(
+      text.substring(0, start) + textToInsert + text.substring(end),
+    );
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + textToInsert.length,
+        start + textToInsert.length,
+      );
+    }, 0);
   };
 
-  // Helper functions for formatting
-  const appendText = (text: string) => {
-    setDescription(prev => prev + text);
-  };
-
-  const handleSubmit = (action: "draft" | "publish" | "schedule") => {
-    console.log("Submitting as", action, {
-      account: selectedAccount,
-      type: activeTab,
-      description,
-      location,
-      media: uploadedMediaUrl ? "Attached" : "None"
-    });
-    
-    if (action === "schedule") {
-      onSchedule();
-    } else {
-      onClose(); // Just close for draft/publish for now
-    }
-  };
+  // Determine active channel for the main composer
+  const activeChannel =
+    selectedAccountIds.length > 0
+      ? ACCOUNTS.find((a) => a.id === selectedAccountIds[0])
+      : null;
+  const linkedChannels = selectedAccountIds
+    .slice(1)
+    .map((id) => ACCOUNTS.find((a) => a.id === id))
+    .filter(Boolean);
 
   return (
-    <div className="fixed inset-0 bg-[#1E293B]/50 flex items-center justify-center z-50 p-4 font-manrope">
-      <div className="bg-white rounded-[16px] w-full max-w-[640px] flex flex-col relative shadow-2xl animate-in zoom-in-95 duration-200">
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100">
-          <h2 className="text-xl font-bold text-[#1E293B]">Add {activeTab}</h2>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-[#64748B]"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="px-5 py-5 overflow-y-auto max-h-[80vh] custom-scrollbar">
-          {/* Accounts Section */}
-          <div className="mb-6 relative">
-            <h3 className="text-[13px] font-bold text-[#94A3B8] uppercase tracking-wider mb-2">Accounts</h3>
-            <div 
-              onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
-              className={`border rounded-[12px] p-3 flex items-center justify-between cursor-pointer transition-colors ${
-                isAccountDropdownOpen ? "border-[#635BFF] bg-[#635BFF]/5" : "border-[#E2E8F0] hover:border-[#635BFF]"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#E2E8F0] overflow-hidden shrink-0">
-                  <Image
-                    width={40}
-                    height={40}
-                    src={selectedAccount.avatar}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <div className="text-[14px] font-bold text-[#1E293B] flex flex-wrap items-center gap-x-1">
-                    <span>{selectedAccount.name}</span>
-                    <span className="hidden sm:inline text-slate-300">•</span>
-                    <span className="font-semibold text-[#64748B]">
-                      {selectedAccount.handle}
-                    </span>
-                  </div>
-                  <div className="text-[11px] font-semibold text-[#94A3B8] flex items-center gap-1.5 mt-0.5">
-                    Platform:
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-[9px] font-bold uppercase ${
-                      selectedAccount.platform === 'in' ? 'bg-[#0077b5]' : 'bg-[#E1306C]'
-                    }`}>
-                      {selectedAccount.platform}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ChevronDown className={`w-5 h-5 text-[#635BFF] transition-transform ${isAccountDropdownOpen ? "rotate-180" : ""}`} />
-            </div>
-
-            {/* Account Dropdown */}
-            {isAccountDropdownOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-[12px] shadow-lg z-10 overflow-hidden animate-in slide-in-from-top-2">
-                {ACCOUNTS.map((account) => (
-                  <div 
-                    key={account.id}
-                    onClick={() => {
-                      setSelectedAccount(account);
-                      setIsAccountDropdownOpen(false);
-                    }}
-                    className="flex items-center justify-between p-3 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-b-0"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Image width={32} height={32} src={account.avatar} alt={account.name} className="w-8 h-8 rounded-full object-cover" />
-                      <div>
-                        <p className="text-[13px] font-bold text-[#1E293B]">{account.name}</p>
-                        <p className="text-[11px] font-medium text-[#64748B]">{account.handle}</p>
-                      </div>
-                    </div>
-                    {selectedAccount.id === account.id && <Check className="w-4 h-4 text-[#635BFF]" />}
-                  </div>
-                ))}
-              </div>
-            )}
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
+      <div className="bg-[#1A1A1A] rounded-[12px] w-full max-w-[1100px] max-h-[90vh] flex flex-col relative shadow-2xl overflow-hidden font-sans border border-[#333]">
+        {/* Top Header Bar */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#2C2C2C] bg-[#1A1A1A]">
+          <div className="flex items-center gap-3">
+            <h2 className="text-[15px] font-bold text-white">Create Post</h2>
+            <button className="flex items-center gap-1.5 px-2.5 py-1 text-[13px] font-medium text-gray-300 border border-[#333] rounded-[6px] hover:bg-[#2C2C2C] transition-colors">
+              <Tag className="w-3.5 h-3.5" />
+              Tags
+              <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
+            </button>
           </div>
 
-          {/* Tabs */}
-          <div className="flex items-center gap-6 border-b border-[#F1F5F9] mb-6">
-            {(["Post", "Reel", "Story"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`pb-3 text-[14px] font-bold border-b-2 transition-colors ${
-                  activeTab === tab
-                    ? "border-[#635BFF] text-[#635BFF]"
-                    : "border-transparent text-[#64748B] hover:text-[#1E293B]"
-                }`}
+          <div className="flex items-center gap-4">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-bold text-[#1A1A1A] bg-[#91E3A9] rounded-[6px] hover:bg-[#7ED896] transition-colors">
+              <ImageIcon className="w-4 h-4" />
+              Preview
+            </button>
+            <button className="text-gray-400 hover:text-white transition-colors ml-2">
+              <Maximize2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleClose}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Main Content: 2 Columns */}
+        <div className="flex flex-1 overflow-hidden min-h-[600px]">
+          {/* Left Column - Composer */}
+          <div className="w-[60%] flex flex-col border-r border-[#2C2C2C] p-6 overflow-y-auto bg-[#222222]">
+            {/* Account Avatars */}
+            <div className="flex items-center gap-2 mb-6">
+              {ACCOUNTS.map((account) => {
+                const isSelected = selectedAccountIds.includes(account.id);
+                return (
+                  <button
+                    key={account.id}
+                    onClick={() => toggleAccount(account.id)}
+                    className="relative focus:outline-none shrink-0 group"
+                    title={account.name}
+                  >
+                    <div
+                      className={`w-10 h-10 rounded-[8px] flex items-center justify-center transition-all ${isSelected ? account.bg : "bg-[#333] hover:bg-[#444]"} ${isSelected ? "" : "grayscale opacity-60 hover:grayscale-0 hover:opacity-100"}`}
+                    >
+                      <span
+                        className={`text-[18px] font-bold ${isSelected ? account.iconColor : "text-gray-400"}`}
+                      >
+                        {account.icon}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Main Composer Box */}
+            {activeChannel && (
+              <div className="flex flex-col bg-[#2C2C2C] border border-[#3A3A3A] rounded-[10px] p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0 ${activeChannel.bg}`}
+                  >
+                    <span
+                      className={`text-[12px] font-bold ${activeChannel.iconColor}`}
+                    >
+                      {activeChannel.icon}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <textarea
+                      ref={textareaRef}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="w-full bg-transparent resize-none text-[15px] text-white placeholder:text-gray-500 focus:outline-none min-h-[140px]"
+                      placeholder={
+                        activeChannel.id === "tw"
+                          ? "Start writing or get inspired with Templates"
+                          : "What would you like to share?"
+                      }
+                    />
+
+                    {/* Media Upload Area */}
+                    <div className="mt-2 mb-4">
+                      {uploadedMediaUrl ? (
+                        <div className="relative w-48 h-48 rounded-[8px] overflow-hidden border border-[#444] group">
+                          <Image
+                            src={uploadedMediaUrl}
+                            alt="Upload"
+                            fill
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button
+                              onClick={() => setUploadedMediaUrl(null)}
+                              className="bg-white/20 hover:bg-red-500 text-white rounded-full p-2 backdrop-blur-sm transition-colors"
+                            >
+                              <X className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="w-[140px] h-[140px] rounded-[12px] border border-dashed border-[#555] flex flex-col items-center justify-center gap-3 hover:bg-[#333] transition-colors cursor-pointer"
+                        >
+                          <ImageIcon className="w-6 h-6 text-gray-400" />
+                          <span className="text-[13px] font-medium text-[#7ED896] text-center leading-tight">
+                            Drag & drop or
+                            <br />
+                            select a file
+                          </span>
+                        </button>
+                      )}
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept="image/*,video/*"
+                      />
+                    </div>
+
+                    {/* Toolbar */}
+                    <div className="flex items-center justify-between border-t border-[#3A3A3A] pt-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="flex items-center gap-1 px-2 py-1 text-gray-400 hover:text-white rounded hover:bg-[#3A3A3A] transition-colors">
+                          <Plus className="w-4 h-4" />
+                          <ChevronDown className="w-3.5 h-3.5" />
+                        </button>
+
+                        <div className="relative" ref={emojiPickerRef}>
+                          <button
+                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                            className="p-1.5 text-gray-400 hover:text-white rounded hover:bg-[#3A3A3A] transition-colors"
+                          >
+                            <Smile className="w-[18px] h-[18px]" />
+                          </button>
+                          {showEmojiPicker && (
+                            <div className="absolute bottom-full left-0 mb-2 w-[240px] bg-[#2C2C2C] border border-[#3A3A3A] rounded-[8px] shadow-lg p-2 grid grid-cols-5 gap-1 z-20">
+                              {EMOJIS.map((emoji) => (
+                                <button
+                                  key={emoji}
+                                  onClick={() => {
+                                    insertAtCursor(emoji);
+                                    setShowEmojiPicker(false);
+                                  }}
+                                  className="text-lg hover:bg-[#3A3A3A] p-1.5 rounded-[4px]"
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <button
+                          onClick={() => insertAtCursor("#")}
+                          className="p-1.5 text-gray-400 hover:text-white rounded hover:bg-[#3A3A3A] transition-colors"
+                        >
+                          <Hash className="w-[18px] h-[18px]" />
+                        </button>
+
+                        <button className="p-1.5 ml-1 text-green-900 bg-[#7ED896] rounded-[6px] hover:bg-[#92E3A9] transition-colors">
+                          <Wand2 className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <div className="text-[12px] font-medium text-gray-500 bg-[#1A1A1A] px-2 py-0.5 rounded-[4px] border border-[#333]">
+                          {280 - description.length}
+                        </div>
+                        <button className="flex items-center gap-1.5 text-[14px] font-bold text-gray-300 hover:text-white transition-colors">
+                          <Plus className="w-4 h-4" />
+                          Start Thread
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Toggle */}
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-[#3A3A3A]">
+                  <span className="text-[12px] font-bold text-gray-400 flex items-center gap-1">
+                    AI-Generated <Info className="w-3 h-3" />
+                  </span>
+                  <button
+                    onClick={() => setAiGenerated(!aiGenerated)}
+                    className={`w-8 h-4 rounded-full relative transition-colors ${aiGenerated ? "bg-green-500" : "bg-gray-600"}`}
+                  >
+                    <div
+                      className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${aiGenerated ? "right-0.5" : "left-0.5"}`}
+                    ></div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Linked Channels inputs */}
+            {linkedChannels.map((channel) => channel && (
+              <div
+                key={channel.id}
+                className="bg-[#2A2A2A] border border-[#333] rounded-[8px] p-3 mb-2 flex items-center gap-3"
               >
-                {tab}
-              </button>
+                <div className="relative">
+                  <div
+                    className={`w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0 ${channel.bg}`}
+                  >
+                    <span
+                      className={`text-[12px] font-bold ${channel.iconColor}`}
+                    >
+                      {channel.icon}
+                    </span>
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#FFD600] border-2 border-[#2A2A2A] rounded-full"></div>
+                </div>
+                <span className="text-[14px] text-gray-400 flex-1 cursor-text">
+                  What would you like to share?
+                </span>
+              </div>
             ))}
           </div>
 
-          {/* Description */}
-          <div className="mb-4 relative">
-            <h3 className="text-[13px] font-bold text-[#94A3B8] uppercase tracking-wider mb-2">
-              Content
-            </h3>
+          {/* Right Column - Previews */}
+          <div className="w-[40%] bg-[#1A1A1A] flex flex-col">
+            <div className="p-6 border-b border-[#2C2C2C] flex items-center gap-2 shrink-0">
+              <h3 className="text-[14px] font-bold text-gray-300">
+                Twitter / X Preview
+              </h3>
+              <Info className="w-3.5 h-3.5 text-gray-500" />
+            </div>
 
-            <div className="relative border border-[#E2E8F0] rounded-[12px] overflow-hidden focus-within:border-[#635BFF] transition-colors bg-white">
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full h-32 p-4 focus:outline-none resize-none text-[14px] font-medium text-[#1E293B] placeholder:text-[#94A3B8]"
-                placeholder="What do you want to share with your audience?"
-              ></textarea>
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col items-center">
+              {/* Preview Container */}
+              <div className="w-full max-w-[360px] bg-[#111] border border-[#333] rounded-[12px] p-4 font-sans">
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shrink-0 text-white font-bold">
+                    B
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-[14px] font-bold text-white">
+                        Buffer
+                      </span>
+                      <span className="text-[14px] text-gray-500">@buffer</span>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Media Thumbnails Area */}
-              {mediaState === "uploaded" && uploadedMediaUrl && (
-                <div className="px-4 pb-14">
-                  <div className="relative w-24 h-24 rounded-[8px] overflow-hidden border border-slate-200 group">
-                    <Image src={uploadedMediaUrl} alt="Upload" fill className="object-cover" />
-                    <button
-                      onClick={removeMedia}
-                      className="absolute top-1.5 right-1.5 w-6 h-6 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-red-500 shadow-sm transition-all opacity-0 group-hover:opacity-100"
+                {/* Text Content */}
+                <div className="text-[14px] text-white whitespace-pre-wrap mb-3 leading-relaxed">
+                  {description ||
+                    "Start writing or get inspired with Templates"}
+                </div>
+
+                {/* Image */}
+                {uploadedMediaUrl && (
+                  <div className="w-full rounded-[14px] overflow-hidden border border-[#333] mb-3">
+                    <Image
+                      src={uploadedMediaUrl}
+                      alt="Preview"
+                      width={400}
+                      height={300}
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
+                )}
+
+                {/* Action Icons */}
+                <div className="flex items-center justify-between text-gray-500 mt-2 px-1">
+                  <button className="hover:text-blue-400 flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4" />
+                  </button>
+                  <button className="hover:text-green-400 flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <path d="M3 12h3M21 12h-3M12 3v3M12 21v-3M5.636 5.636l2.122 2.122M18.364 18.364l-2.122-2.122M5.636 18.364l2.122-2.122M18.364 5.636l-2.122 2.122" />
+                    </svg>
+                  </button>
+                  <button className="hover:text-pink-500 flex items-center gap-2">
+                    <Heart className="w-4 h-4" />
+                  </button>
+                  <button className="hover:text-blue-400 flex items-center gap-2">
+                    <BarChart2 className="w-4 h-4" />
+                  </button>
+                  <div className="flex items-center gap-4">
+                    <button className="hover:text-blue-400">
+                      <Bookmark className="w-4 h-4" />
+                    </button>
+                    <button className="hover:text-blue-400">
+                      <Share className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
+              </div>
+
+              {!description && !uploadedMediaUrl && (
+                <div className="mt-8 flex flex-col items-center opacity-40">
+                  <div className="w-32 h-32 bg-[#222] rounded-[8px] flex flex-col p-4 gap-2 mb-4 border border-[#333] relative">
+                    <div className="absolute -top-3 -right-3 text-white text-xl">
+                      ✨
+                    </div>
+                    <div className="absolute -bottom-2 -left-2 text-white text-xl">
+                      ✨
+                    </div>
+                    <div className="flex gap-2 items-center mb-2">
+                      <div className="w-4 h-4 rounded-full bg-[#444]"></div>
+                      <div className="h-2 w-16 bg-[#444] rounded"></div>
+                    </div>
+                    <div className="flex-1 bg-[#444] rounded"></div>
+                  </div>
+                  <p className="text-[13px] text-gray-400 font-medium">
+                    See your post preview here
+                  </p>
+                </div>
               )}
-
-              {/* Formatting Toolbar */}
-              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-white">
-                <button onClick={() => appendText('**bold** ')} className="w-8 h-8 flex items-center justify-center rounded-[8px] border border-transparent hover:border-slate-200 text-[#64748B] hover:bg-slate-50 transition-colors" title="Bold">
-                  <Bold className="w-4 h-4" />
-                </button>
-                <button onClick={() => appendText('_italic_ ')} className="w-8 h-8 flex items-center justify-center rounded-[8px] border border-transparent hover:border-slate-200 text-[#64748B] hover:bg-slate-50 transition-colors" title="Italic">
-                  <Italic className="w-4 h-4" />
-                </button>
-                <button onClick={() => appendText('😊')} className="w-8 h-8 flex items-center justify-center rounded-[8px] border border-transparent hover:border-slate-200 text-[#64748B] hover:bg-slate-50 transition-colors" title="Emoji">
-                  <Smile className="w-4 h-4" />
-                </button>
-                <button onClick={() => appendText('#')} className="w-8 h-8 flex items-center justify-center rounded-[8px] border border-transparent hover:border-slate-200 text-[#64748B] hover:bg-slate-50 transition-colors" title="Hashtag">
-                  <Hash className="w-4 h-4" />
-                </button>
-              </div>
             </div>
-          </div>
-
-          {/* Location Input (if active) */}
-          {showLocationInput && (
-            <div className="mb-4 animate-in slide-in-from-top-2">
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#635BFF] w-4 h-4" />
-                <input 
-                  type="text" 
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Enter location..."
-                  className="w-full pl-9 pr-4 py-2.5 border border-[#E2E8F0] rounded-[10px] text-[14px] font-medium text-[#1E293B] focus:border-[#635BFF] outline-none"
-                  autoFocus
-                />
-                <button onClick={() => setShowLocationInput(false)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#1E293B]">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Media Dropzone (if active) */}
-          {mediaState === "dropzone" && (
-            <div
-              onClick={handleDropzoneClick}
-              className="mb-4 border-2 border-dashed border-[#635BFF]/40 bg-[#635BFF]/5 rounded-[12px] p-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-[#635BFF]/10 hover:border-[#635BFF] transition-colors animate-in slide-in-from-top-2"
-            >
-              <div className="w-12 h-12 bg-white text-[#635BFF] rounded-full flex items-center justify-center shadow-sm">
-                <MousePointerClick className="w-5 h-5" />
-              </div>
-              <div className="text-center">
-                <p className="text-[14px] font-bold text-[#635BFF]">
-                  Click to upload media
-                </p>
-                <p className="text-[12px] font-medium text-[#64748B] mt-1">
-                  JPG, PNG, MP4 up to 50MB
-                </p>
-              </div>
-            </div>
-          )}
-          
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleFileChange} 
-            className="hidden" 
-            accept="image/*,video/*"
-          />
-
-          {/* Location & Media Triggers */}
-          <div className="flex items-center gap-3 mt-6">
-            <button 
-              onClick={() => setShowLocationInput(!showLocationInput)}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 border rounded-[10px] text-[13px] font-bold transition-colors ${showLocationInput || location ? 'border-[#635BFF] text-[#635BFF] bg-[#635BFF]/5' : 'border-[#E2E8F0] text-[#1E293B] hover:bg-slate-50'}`}
-            >
-              <MapPin className="w-4 h-4" />
-              {location || "Location"}
-            </button>
-            <button
-              onClick={handleMediaClick}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 border rounded-[10px] text-[13px] font-bold transition-colors ${mediaState !== 'hidden' ? 'border-[#635BFF] text-[#635BFF] bg-[#635BFF]/5' : 'border-[#E2E8F0] text-[#1E293B] hover:bg-slate-50'}`}
-            >
-              <ImageIcon className="w-4 h-4" />
-              Media
-            </button>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="p-5 border-t border-slate-100 flex flex-col-reverse sm:flex-row justify-end items-stretch sm:items-center gap-3 bg-slate-50/50 rounded-b-[16px]">
-          <button 
-            onClick={() => handleSubmit("draft")}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-[10px] border border-[#635BFF] text-[#635BFF] font-bold text-[14px] hover:bg-[#635BFF]/5 transition-colors"
-          >
-            Save Draft
-          </button>
-          <button 
-            onClick={() => handleSubmit("publish")}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-[10px] bg-[#E0E7FF] text-[#635BFF] font-bold text-[14px] hover:bg-[#D6D9FF] transition-colors"
-          >
-            Publish Now
-          </button>
+        <div className="px-6 py-5 border-t border-[#2C2C2C] bg-[#1A1A1A] flex items-center justify-end z-10">
           <button
-            onClick={() => handleSubmit("schedule")}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-[10px] bg-[#635BFF] text-white font-bold text-[14px] shadow-lg shadow-[#635BFF]/20 hover:opacity-90 transition-opacity"
+            onClick={() => onSchedule()}
+            className="px-5 py-2.5 bg-[#91E3A9] hover:bg-[#7ED896] text-[#1A1A1A] text-[14px] font-bold rounded-[6px] transition-colors"
           >
-            Schedule Post
+            Connect Channels to Post
           </button>
         </div>
       </div>
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #cbd5e1;
-          border-radius: 10px;
-        }
-      `}</style>
     </div>
   );
 }

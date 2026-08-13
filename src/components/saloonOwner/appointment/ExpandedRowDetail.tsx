@@ -1,4 +1,4 @@
-﻿import { Appointment } from "@/@types/dashboard/appointment.type";
+import { Appointment } from "@/@types/salon-owner/appointment.type";
 import { BookingStep, StepState } from "@/@types/salon-owner/bookingStep.type";
 import { Status } from "@/@types/salon-owner/Statu.type";
 import React from "react";

@@ -1,9 +1,9 @@
-import PrientReceiptLayout from "@/components/salon-owner/appointment/prient-receipt/PrientReceiptLayout";
+import PrientReceiptContent from "@/components/saloonOwner/appointment/prient-receipt/PrientReceiptContent";
 
 export default function page() {
   return (
     <div>
-      <PrientReceiptLayout />
+      <PrientReceiptContent />
     </div>
   );
 }

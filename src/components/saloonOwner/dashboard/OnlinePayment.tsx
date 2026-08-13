@@ -3,7 +3,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Hourglass, Clock } from "lucide-react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,12 +23,20 @@ export default function OnlinePayment() {
     ],
   };
 
-  const chartOptions = {
+  const chartOptions: ChartOptions<"doughnut"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { enabled: false },
+      tooltip: {
+        enabled: true,
+        backgroundColor: "#1E293B",
+        titleFont: { size: 13, family: "'Manrope', sans-serif" },
+        bodyFont: { size: 12, family: "'Manrope', sans-serif" },
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: true,
+      },
     },
   };
 
