@@ -16,10 +16,11 @@ import { Appointment } from "./data";
 import StatusBadge from "./StatusBadge";
 import ExpandedRowDetail from "./ExpandedRowDetail";
 import { Status } from "./data";
-import CalendarView from "./Calendarview";
+// import CalendarView from "./Calendarview";
 import TeamFilterDropdown from "./TeamFilterDropdown";
 import Link from "next/link";
 import Pagination from "@/components/saloonOwner/common/Pagination";
+import CalendarView from "./Calendarview";
 
 const allAppointments: Appointment[] = [
   {

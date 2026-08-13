@@ -630,7 +630,7 @@ export default function NewAppointmentModal({
 
                 <div className="grid grid-cols-2 gap-3 max-h-[280px] overflow-y-auto custom-scrollbar pr-2">
                   {DUMMY_SERVICES.filter((s) =>
-                    s.name.toLowerCase().includes(serviceSearch.toLowerCase())
+                    s.name.toLowerCase().includes(serviceSearch.toLowerCase()),
                   ).map((s) => {
                     const isSelected = selectedServiceIds.includes(s.id);
                     return (
@@ -652,7 +652,16 @@ export default function NewAppointmentModal({
                             }`}
                           >
                             {isSelected && (
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="white"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
                                 <polyline points="20 6 9 17 4 12"></polyline>
                               </svg>
                             )}
@@ -779,7 +788,16 @@ export default function NewAppointmentModal({
           {currentStep === 4 && (
             <div className="flex-1 flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in-95 duration-300">
               <div className="w-20 h-20 bg-[#10B981]/10 text-[#10B981] rounded-full flex items-center justify-center mb-6">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
@@ -787,7 +805,8 @@ export default function NewAppointmentModal({
                 Appointment Created!
               </h2>
               <p className="text-[15px] text-[#999] max-w-sm mx-auto leading-relaxed">
-                Your new appointment has been successfully booked and added to the calendar.
+                Your new appointment has been successfully booked and added to
+                the calendar.
               </p>
             </div>
           )}

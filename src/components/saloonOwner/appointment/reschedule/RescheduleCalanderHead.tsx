@@ -37,13 +37,19 @@ export default function RescheduleCalanderHead({
 
         {/* Center: date nav */}
         <div className="flex items-center border border-[#E8EEFF] rounded-[8px] overflow-hidden">
-          <button onClick={prevDay} className="px-3 sm:px-4 py-2.5 border-r border-[#E8EEFF] hover:bg-[#F4F6FA] transition-colors cursor-pointer">
+          <button
+            onClick={prevDay}
+            className="px-3 sm:px-4 py-2.5 border-r border-[#E8EEFF] hover:bg-[#F4F6FA] transition-colors cursor-pointer"
+          >
             <ChevronLeft size={18} className="text-[#635BFF]" />
           </button>
           <span className="px-4 sm:px-6 py-2.5 text-sm font-semibold font-manrope text-[#635BFF] whitespace-nowrap">
             {formatDate(currentDate)}
           </span>
-          <button onClick={nextDay} className="px-3 sm:px-4 py-2.5 border-l border-[#E8EEFF] hover:bg-[#F4F6FA] transition-colors cursor-pointer">
+          <button
+            onClick={nextDay}
+            className="px-3 sm:px-4 py-2.5 border-l border-[#E8EEFF] hover:bg-[#F4F6FA] transition-colors cursor-pointer"
+          >
             <ChevronRight size={18} className="text-[#635BFF]" />
           </button>
         </div>
