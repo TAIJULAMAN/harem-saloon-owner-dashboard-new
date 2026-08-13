@@ -1,48 +1,57 @@
-# Harem Salon Landing Page
+# Harem Salon Owner Dashboard
 
-A premium, high-fidelity web application for Harem Salon, featuring a complete service booking system, voucher purchasing flow, and an interactive landing page.
+A comprehensive, high-fidelity administrative web application for Harem Salon owners and managers. This dashboard provides a centralized hub for managing daily operations, staff, clients, inventory, and financial metrics.
 
 ## Features
 
-### Service Scheduling
+### Comprehensive Dashboard & Analytics
 
-- **Comprehensive Flow**: Integrated multi-step process for selecting dates, times, services, and preferred stylists.
-- **Real-time Feedback**: Interactive selection with immediate updates to the order summary.
-- **Dynamic Breadcrumbs**: Clear navigation cues across all booking steps.
+- **At-a-Glance Metrics**: View critical statistics including revenue, daily appointments, and client retention.
+- **Interactive Charts**: Visual representations of financial performance and business growth using Chart.js.
 
-### Group Appointments
+### Appointment & Calendar Management
 
-- **Modular Participant System**: Option to book for "Only Me" or for a group.
-- **Participant Management**: Dynamic "Add Participants" step with the ability to edit services or remove participants on the fly.
-- **Consolidated Summary**: Sidebar automatically calculates totals and discounts for the entire group.
+- **Centralized Calendar**: View, create, edit, and cancel appointments seamlessly.
+- **Booking Flow**: Manage complex bookings, group appointments, and staff assignments.
+- **Waivers**: Manage and track necessary waivers and consent forms for specific services.
 
-### Voucher Purchase
+### Client CRM (Customer Relationship Management)
 
-- **Dedicated Flow**: A tailored journey for buying gift vouchers.
-- **Recipient Options**: Choose between self-use, print-at-home, or email delivery.
-- **Success Integration**: Polished confirmation modals upon successful purchase.
+- **Detailed Profiles**: Access comprehensive client histories, past appointments, and preferences.
+- **File Management**: Securely store and manage client-related documents and files.
 
-### Payment Integration
+### Team & Staff Management
 
-- **Flexible Options**: Support for both "Pay in Salon" and "Pay Now".
-- **Online Methods**: Integrated UI for Card payments, Apple Pay, Google Pay, and Bank Transfers.
-- **Dynamic UI**: Sub-payment methods appear contextually based on user selection.
+- **Staff Profiles**: Manage employee details, schedules, and performance metrics.
+- **Role-Based Access Control**: Define and assign granular permissions and roles for different staff members.
 
-### Design & UX
+### Financials & Budgeting
 
-- **Premium Aesthetics**: Clean, modern interface using the Manrope font and a curated color palette (`#635BFF`).
-- **Interactive Elements**: Smooth transitions with Framer Motion and AOS.
-- **Fully Responsive**: Optimized for all device sizes from mobile to desktop.
+- **Checkout & POS**: Integrated point-of-sale functionality for seamless in-salon checkouts.
+- **Revenue Tracking**: Monitor daily, weekly, and monthly income.
+- **Budgeting Tools**: Manage operational costs and financial projections.
+
+### Inventory & Services
+
+- **Service Catalog**: Easily add, update, or remove salon services, pricing, and duration.
+- **Stock Tracking**: Monitor product inventory, track usage, and manage supplier orders.
+
+### Communications & Support
+
+- **Notifications system**: Alerts for new bookings, low inventory, and system updates.
+- **Social Integration**: Connect and manage social media campaigns.
+- **Support**: Integrated help desk and support resources for staff.
 
 ## Tech Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide-dev.github.io/lucide-react/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [AOS](https://michalsnik.github.io/aos/)
-- **Sliders**: [Swiper](https://swiperjs.com/)
-- **Maps**: [Leaflet](https://leafletjs.com/) & [React Leaflet](https://react-leaflet.js.org/)
 - **Language**: TypeScript
+- **Icons**: [Lucide React](https://lucide-dev.github.io/lucide-react/)
+- **Charts & Data Viz**: [Chart.js](https://www.chartjs.org/) & [React-Chartjs-2](https://react-chartjs-2.js.org/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [AOS](https://michalsnik.github.io/aos/)
+- **Sliders/Carousels**: [Swiper](https://swiperjs.com/)
+- **Maps**: [Leaflet](https://leafletjs.com/) & [React Leaflet](https://react-leaflet.js.org/)
 
 ## License
 
