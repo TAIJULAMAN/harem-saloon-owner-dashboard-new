@@ -18,12 +18,36 @@ const statusColor: Record<
   AppStatus,
   { bg: string; text: string; border: string }
 > = {
-  Booked: { bg: "bg-[#F3F0FF]", text: "text-[#635BFF]", border: "border-l-[#635BFF]" },
-  Confirmed: { bg: "bg-[#E6FFFE]", text: "text-[#16CDC7]", border: "border-l-[#16CDC7]" },
-  Arrived: { bg: "bg-[#FFFBEA]", text: "text-[#E6B800]", border: "border-l-[#FFD648]" },
-  Started: { bg: "bg-[#FFF0F3]", text: "text-[#FF6692]", border: "border-l-[#FF6692]" },
-  Completed: { bg: "bg-[#EDFBF3]", text: "text-[#36C76C]", border: "border-l-[#36C76C]" },
-  Canceled: { bg: "bg-[#FFF0F3]", text: "text-[#FF6692]", border: "border-l-[#FF6692]" },
+  Booked: {
+    bg: "bg-[#F3F0FF]",
+    text: "text-[#635BFF]",
+    border: "border-l-[#635BFF]",
+  },
+  Confirmed: {
+    bg: "bg-[#E6FFFE]",
+    text: "text-[#16CDC7]",
+    border: "border-l-[#16CDC7]",
+  },
+  Arrived: {
+    bg: "bg-[#FFFBEA]",
+    text: "text-[#E6B800]",
+    border: "border-l-[#FFD648]",
+  },
+  Started: {
+    bg: "bg-[#FFF0F3]",
+    text: "text-[#FF6692]",
+    border: "border-l-[#FF6692]",
+  },
+  Completed: {
+    bg: "bg-[#EDFBF3]",
+    text: "text-[#36C76C]",
+    border: "border-l-[#36C76C]",
+  },
+  Canceled: {
+    bg: "bg-[#FFF0F3]",
+    text: "text-[#FF6692]",
+    border: "border-l-[#FF6692]",
+  },
 };
 
 const statusBadgeColor: Record<AppStatus, string> = {
@@ -36,12 +60,9 @@ const statusBadgeColor: Record<AppStatus, string> = {
 };
 
 const teamMembers = [
-  { id: "1", name: "Maria Rodriguez", avatar: "/images/avator.png" },
-  { id: "2", name: "Maria Rodriguez", avatar: "/images/avator.png" },
-  { id: "3", name: "Maria Rodriguez", avatar: "/images/avator.png" },
-  { id: "4", name: "Maria Rodriguez", avatar: "/images/avator.png" },
-  { id: "5", name: "Maria Rodriguez", avatar: "/images/avator.png" },
-  { id: "6", name: "Maria Rodriguez", avatar: "/images/avator.png" },
+  { id: "1", name: "Shah Aman", avatar: "/avatar/icon1.png" },
+  { id: "2", name: "Hasan Siam", avatar: "/avatar/icon2.png" },
+  { id: "3", name: "Hridoy Khan", avatar: "/avatar/icon3.png" },
 ];
 
 const makeDate = (y: number, m: number, d: number) => new Date(y, m - 1, d);
@@ -55,7 +76,7 @@ const allAppointments: CalAppointment[] = [
       date: makeDate(2025, 9, 2),
       startTime: "09:00",
       endTime: "10:30",
-      price: "â‚¬ 170",
+      price: "€ 170",
       duration: "90 min",
       status: "Canceled" as AppStatus,
       employeeName: member.name,
@@ -83,8 +104,18 @@ function getWeekStart(d: Date) {
 }
 
 const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export default function CalendarView() {
@@ -145,7 +176,11 @@ export default function CalendarView() {
   const dateLabel = () => {
     if (period === "Day") {
       return currentDate
-        .toLocaleDateString("en-US", { weekday: "long", month: "short", day: "2-digit" })
+        .toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "short",
+          day: "2-digit",
+        })
         .replace(",", "");
     }
     if (period === "Week") {
@@ -206,9 +241,10 @@ export default function CalendarView() {
                 key={p}
                 onClick={() => handlePeriodChange(p)}
                 className={`relative px-6 py-[10px] text-[16px] font-manrope font-medium transition-all cursor-pointer
-                  ${period === p
-                    ? "bg-[#DDDBFF] text-[#0A2540]"
-                    : "text-[#526B7A] bg-white hover:text-[#29343D]"
+                  ${
+                    period === p
+                      ? "bg-[#DDDBFF] text-[#0A2540]"
+                      : "text-[#526B7A] bg-white hover:text-[#29343D]"
                   }
                   ${i !== 2 ? "border-r border-[#E0E6EB]" : ""}
                 `}

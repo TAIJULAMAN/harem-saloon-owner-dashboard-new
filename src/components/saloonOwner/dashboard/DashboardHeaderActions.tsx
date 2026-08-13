@@ -15,7 +15,7 @@ export default function DashboardHeaderActions() {
           Refresh Data
         </button>
         <Link
-          href="/dashboard/appointments"
+          href="/dashboard/appointment"
           className="flex items-center justify-center gap-2 px-4 py-2 bg-[#635BFF] text-white rounded-lg text-sm font-semibold hover:bg-[#534dfd] transition-colors shadow-md shadow-[#635BFF]/20 w-full sm:w-auto"
         >
           <Eye className="w-4 h-4" />

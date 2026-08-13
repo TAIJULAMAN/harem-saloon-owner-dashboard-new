@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import IAppoinUser from "../IAppoinUser";
 import IView from "./IView";
-import TeamFilterDropdown from "../TeamFilterDropdown";
+import TeamDropdown from "../calander-view/TeamDropdown";
 
 export default function RescheduleCalanderHead({
   setActivePeriod,
@@ -10,6 +10,10 @@ export default function RescheduleCalanderHead({
   formatDate,
   nextDay,
   currentDate,
+  onToggleFullscreen,
+  selectedTeamIds,
+  setSelectedTeamIds,
+  teamMembers,
 }: {
   prevDay: () => void;
   formatDate: (date: Date) => string;
@@ -17,11 +21,19 @@ export default function RescheduleCalanderHead({
   currentDate: Date;
   setActivePeriod: (period: "Month" | "Week" | "Day") => void;
   activePeriod: "Month" | "Week" | "Day";
+  onToggleFullscreen?: () => void;
+  selectedTeamIds: string[];
+  setSelectedTeamIds: (ids: string[]) => void;
+  teamMembers: { id: string; name: string; avatar: string }[];
 }) {
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-4 px-7 py-7 flex-shrink-0">
-        <TeamFilterDropdown />
+        <TeamDropdown
+          selectedIds={selectedTeamIds}
+          onChange={setSelectedTeamIds}
+          teamMembers={teamMembers}
+        />
 
         {/* Center: date nav */}
         <div className="flex items-center border border-[#E8EEFF] rounded-[8px] overflow-hidden">
@@ -55,7 +67,10 @@ export default function RescheduleCalanderHead({
             ))}
           </div>
 
-          <div className="bg-[#EFF4FA] rounded-[8px] px-4 py-2.5">
+          <div
+            className="bg-[#EFF4FA] rounded-[8px] px-4 py-2.5 cursor-pointer hover:bg-[#e0e7f0] transition-colors"
+            onClick={onToggleFullscreen}
+          >
             <IView />
           </div>
         </div>

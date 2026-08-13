@@ -1,9 +1,18 @@
-import AppoinmentContent from "@/components/saloonOwner/appointment/AppoinmentContent";
+"use client";
 
-export default function page() {
+import React, { Suspense } from "react";
+import SettingsPageContent from "@/components/saloonOwner/appointments/SettingsPageContent";
+
+export default function SettingsPage() {
   return (
-    <>
-      <AppoinmentContent />
-    </>
+    <Suspense
+      fallback={
+        <div className="p-5 text-center text-[#64748B]">
+          Loading settings...
+        </div>
+      }
+    >
+      <SettingsPageContent />
+    </Suspense>
   );
 }

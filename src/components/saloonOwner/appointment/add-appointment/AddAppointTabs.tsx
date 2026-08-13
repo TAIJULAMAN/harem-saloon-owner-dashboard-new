@@ -1,6 +1,6 @@
-﻿import React from "react";
+import React from "react";
 import IListIcon from "./IListIcon";
-import ICalaender from "@/app/account-protal/svg/ICalaender";
+import ICalaender from "@/components/svg/ICalaender";
 import IDollar from "./IDollar";
 
 type Step = "details" | "review" | "payment";

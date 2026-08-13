@@ -1,34 +1,13 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import {
-  Plus,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronFirst,
-  ChevronLast,
-  EllipsisVertical,
-  Search,
-  ChevronUp,
-} from "lucide-react";
+import { Plus, ChevronRight, EllipsisVertical } from "lucide-react";
 import SearchMemberModal from "./SearchMemberModal";
-import RowActions from "./RowActions";
-import StatusBadge from "./StatusBadge";
-import ExpandedRowDetail from "./ExpandedRowDetail";
 import CalendarView from "./Calendarview";
-import TeamFilterDropdown from "./TeamFilterDropdown";
 import AppointmentTableView from "./AppointmentTableView";
 import Link from "next/link";
 import { CustomSelect } from "@/components/common/CustomSelect";
 
-import {
-  Status,
-  allAppointments,
-  statusStyles,
-  recentMembers,
-  statusFilters,
-} from "./data";
+import { Status, allAppointments, recentMembers, statusFilters } from "./data";
 
 export default function AppointmentContent() {
   const [activeStatus, setActiveStatus] = useState<Status | "All">("All");
@@ -38,7 +17,9 @@ export default function AppointmentContent() {
   const [activePeriod, setActivePeriod] = useState<"Month" | "Week" | "Day">(
     "Day",
   );
-  const [currentDate, setCurrentDate] = useState(new Date("2025-08-05T00:00:00"));
+  const [currentDate, setCurrentDate] = useState(
+    new Date("2025-08-05T00:00:00"),
+  );
   const [itemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
@@ -106,7 +87,11 @@ export default function AppointmentContent() {
   const dateLabel = (() => {
     if (activePeriod === "Day") {
       return currentDate
-        .toLocaleDateString("en-US", { weekday: "long", month: "short", day: "2-digit" })
+        .toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "short",
+          day: "2-digit",
+        })
         .replace(",", "");
     }
     if (activePeriod === "Week") {
@@ -116,15 +101,18 @@ export default function AppointmentContent() {
       e.setDate(e.getDate() + 6);
       return `${s.toLocaleDateString("en-US", { month: "short", day: "2-digit" })} - ${e.toLocaleDateString("en-US", { month: "short", day: "2-digit" })}`;
     }
-    return currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    return currentDate.toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
   })();
 
   const filtered = allAppointments.filter((a) => {
     if (activeStatus !== "All" && a.status !== activeStatus) return false;
-    
+
     const datePart = a.scheduledDate.split("(")[0].trim();
     const apptDate = new Date(datePart);
-    
+
     if (activePeriod === "Day") {
       return (
         apptDate.getFullYear() === currentDate.getFullYear() &&
@@ -268,7 +256,7 @@ export default function AppointmentContent() {
                     )}
                   </div>
 
-                  <Link href="/dashboard/appointment/import-appointments">
+                  <Link href="/dashboard/appointment/import">
                     <button
                       className="w-full text-left px-4 py-2.5 text-sm font-manrope font-medium text-[#29343D] hover:bg-[#F4F6FA] transition-colors cursor-pointer"
                       onClick={() => setMenuOpen(false)}

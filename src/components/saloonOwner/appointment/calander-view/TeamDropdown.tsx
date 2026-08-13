@@ -1,19 +1,25 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IAppoinUser from "../IAppoinUser";
 import { Check, ChevronDown } from "lucide-react";
 import Image from "next/image";
+
+const DEMO_MEMBERS = [
+  { id: "1", name: "Shah Aman", avatar: "/avatar/icon1.png" },
+  { id: "2", name: "Hasan Saon", avatar: "/avatar/icon2.png" },
+  { id: "3", name: "Hridoy Khan", avatar: "/avatar/icon3.png" },
+];
 
 export default function TeamDropdown({
   selectedIds,
   onChange,
   singleSelect,
-  teamMembers,
 }: {
   selectedIds: string[];
   onChange: (ids: string[]) => void;
   singleSelect?: boolean;
-  teamMembers: { id: string; name: string; avatar: string }[];
+  teamMembers?: { id: string; name: string; avatar: string }[];
 }) {
+  const teamMembers = DEMO_MEMBERS;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

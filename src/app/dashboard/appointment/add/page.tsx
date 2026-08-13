@@ -1,9 +1,9 @@
-import AddAppointmentLayout from "@/components/salon-owner/appointment/add-appointment/AddAppointmentLayout";
+import AddAppointmentContent from "@/components/saloonOwner/appointment/add-appointment/AddAppointmentContent";
 
 export default function page() {
   return (
     <div>
-      <AddAppointmentLayout />
+      <AddAppointmentContent />
     </div>
   );
 }

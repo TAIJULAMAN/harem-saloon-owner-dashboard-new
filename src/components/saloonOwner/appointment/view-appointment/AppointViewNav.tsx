@@ -1,16 +1,19 @@
+"use client";
 import React from "react";
 import { ChevronLeft, Home } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 export default function AppointViewNav({
   onCancelAppointment,
 }: {
   onCancelAppointment: () => void;
 }) {
+  const router = useRouter();
   return (
     <div>
       <div className="bg-white border-b border-[#EFF4FA] px-4 sm:px-[30px] py-3 flex items-center justify-between gap-3 rounded-xl">
         <div className="flex items-center gap-2">
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" onClick={() => router.back()}>
             <ChevronLeft color="#635BFF" size={24} />
           </button>
           <h1 className="text-base font-bold font-manrope text-[#29343D]">

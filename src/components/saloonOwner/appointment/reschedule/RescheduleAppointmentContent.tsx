@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import Image from "next/image";
-import { Plus, ChevronLeft, ChevronRight, X, GripVertical } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { GripVertical } from "lucide-react";
 import RescheduleCalanderHead from "./RescheduleCalanderHead";
 import PageHeader from "@/components/common-component/PageHeader";
 import { useRouter } from "next/navigation";
+import RescheduleDayView from "./RescheduleDayView";
+import RescheduleWeekView from "./RescheduleWeekView";
+import RescheduleMonthView from "./RescheduleMonthView";
 
 interface Service {
   id: string;
@@ -24,6 +26,7 @@ interface ScheduledAppointment {
   serviceId: string;
   startSlot: number;
   duration: number;
+  dayIndex?: number;
 }
 
 type CalendarView = "Month" | "Week" | "Day";
@@ -35,12 +38,9 @@ const SERVICES: Service[] = [
 ];
 
 const STAFF: StaffMember[] = [
-  { id: "m1", name: "Maria Rodriguez", avatar: "/avatar/icon1.png" },
-  { id: "m2", name: "Sarah Smith", avatar: "/avatar/icon2.png" },
-  { id: "m3", name: "Emma Jones", avatar: "/avatar/icon3.png" },
-  { id: "m4", name: "Jessica Brown", avatar: "/avatar/icon1.png" },
-  { id: "m5", name: "Olivia Davis", avatar: "/avatar/icon1.png" },
-  { id: "m6", name: "Sophia Wilson", avatar: "/avatar/icon3.png" },
+  { id: "1", name: "Shah Aman", avatar: "/avatar/icon1.png" },
+  { id: "2", name: "Hasan Saon", avatar: "/avatar/icon2.png" },
+  { id: "3", name: "Hridoy Khan", avatar: "/avatar/icon3.png" },
 ];
 
 interface Slot {
@@ -69,6 +69,7 @@ const MIN_COL = 110; // minimum column width before scroll kicks in
 export default function RescheduleAppointmentContent() {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2025, 8, 2));
+  const [selectedTeamIds, setSelectedTeamIds] = useState<string[]>([]);
   const [activePeriod, setActivePeriod] = useState<CalendarView>("Day");
   const [appointments, setAppointments] = useState<ScheduledAppointment[]>([]);
   const [dragging, setDragging] = useState<Service | null>(null);
@@ -76,40 +77,19 @@ export default function RescheduleAppointmentContent() {
     sid: string;
     idx: number;
   } | null>(null);
-  const [selectedStaff, setSelectedStaff] = useState<string>("m1");
-  const [colW, setColW] = useState<number>(MIN_COL);
+  const calendarWrapperRef = useRef<HTMLDivElement>(null);
 
-  const headRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // right panel â€” used to measure width
-
-  useEffect(() => {
-    function recalc() {
-      if (!containerRef.current) return;
-      const avail = containerRef.current.offsetWidth - TIME_W;
-      setColW(Math.max(Math.floor(avail / STAFF.length), MIN_COL));
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      calendarWrapperRef.current?.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable full-screen mode: ${err.message}`,
+        );
+      });
+    } else {
+      document.exitFullscreen();
     }
-    recalc();
-    const ro = new ResizeObserver(recalc);
-    if (containerRef.current) ro.observe(containerRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const totalW = colW * STAFF.length;
-
-  function slide(dir: "l" | "r") {
-    const body = bodyRef.current;
-    const head = headRef.current;
-    if (!body) return;
-    body.scrollLeft += dir === "l" ? -(colW * 2) : colW * 2;
-    if (head) head.scrollLeft = body.scrollLeft;
-  }
-
-  // â”€â”€ Body scroll event â€” keep header in sync while user drags scrollbar â”€â”€â”€
-  const onBodyScroll = useCallback(() => {
-    if (headRef.current && bodyRef.current)
-      headRef.current.scrollLeft = bodyRef.current.scrollLeft;
-  }, []);
+  };
 
   // Date helpers
   function fmt(d: Date) {
@@ -166,9 +146,29 @@ export default function RescheduleAppointmentContent() {
     e.preventDefault();
     if (!dragging) return;
     const dur = Math.ceil(parseInt(dragging.duration) / 15);
+
+    let staffId = sid;
+    let dayIndex = undefined;
+
+    if (sid.includes("_month_")) {
+      const parts = sid.split("_month_");
+      staffId = parts[0];
+      dayIndex = parseInt(parts[1]);
+    } else if (sid.includes("_")) {
+      const parts = sid.split("_");
+      staffId = parts[0];
+      dayIndex = parseInt(parts[1]);
+    }
+
     setAppointments((p) => [
       ...p,
-      { staffId: sid, serviceId: dragging.id, startSlot: idx, duration: dur },
+      {
+        staffId,
+        serviceId: dragging.id,
+        startSlot: idx,
+        duration: dur,
+        dayIndex,
+      },
     ]);
     setDragging(null);
     setHoverCell(null);
@@ -184,7 +184,10 @@ export default function RescheduleAppointmentContent() {
         onBack={() => router.back()}
         breadcrumb={[{ label: "Appointments", active: true }]}
       />
-      <div className="flex-1 min-h-0 bg-white rounded-2xl border border-[#EEF2F8] flex flex-col overflow-hidden">
+      <div
+        ref={calendarWrapperRef}
+        className="flex-1 min-h-0 bg-white rounded-2xl border border-[#EEF2F8] flex flex-col overflow-hidden bg-white"
+      >
         {/* Toolbar */}
         <div className="shrink-0">
           <RescheduleCalanderHead
@@ -194,6 +197,10 @@ export default function RescheduleAppointmentContent() {
             nextDay={next}
             currentDate={currentDate}
             setActivePeriod={setActivePeriod}
+            onToggleFullscreen={toggleFullscreen}
+            selectedTeamIds={selectedTeamIds}
+            setSelectedTeamIds={setSelectedTeamIds}
+            teamMembers={STAFF}
           />
         </div>
 
@@ -238,185 +245,52 @@ export default function RescheduleAppointmentContent() {
               ))}
             </div>
           </div>
-
-          {/* â”€â”€ RIGHT: staff header + grid â”€â”€ */}
-          <div
-            ref={containerRef}
-            className="flex-1 min-w-0 flex flex-col overflow-hidden"
-          >
-            {/* Staff header row */}
-            <div className="shrink-0 bg-[#F3F3FF] relative h-[88px]">
-              {/* Left arrow */}
-              <button
-                onClick={() => slide("l")}
-                className="absolute z-30 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-white border border-[#DDE3EC] shadow-sm hover:bg-[#F4F6FA] transition-colors cursor-pointer"
-                style={{ left: TIME_W - 14 }}
-              >
-                <ChevronLeft
-                  size={14}
-                  strokeWidth={2}
-                  className="text-[#7A8FA6]"
-                />
-              </button>
-
-              {/* Header: overflow-x hidden, synced via ref */}
-              <div
-                ref={headRef}
-                style={{
-                  position: "absolute",
-                  left: TIME_W,
-                  right: 36,
-                  top: 0,
-                  bottom: 0,
-                  overflowX: "hidden",
-                }}
-              >
-                <div
-                  className="flex h-full border-l border-[#E0E6EB]"
-                  style={{ width: totalW }}
-                >
-                  {STAFF.map((staff) => (
-                    <div
-                      key={staff.id}
-                      onClick={() => setSelectedStaff(staff.id)}
-                      className="shrink-0 flex flex-col items-center justify-center gap-[6px] border-r border-[#E0E6EB] last:border-r-0 cursor-pointer hover:bg-[#FAFAFE] transition-colors"
-                      style={{ width: colW }}
-                    >
-                      <div
-                        className="relative overflow-hidden shrink-0"
-                        style={{
-                          width: 52,
-                          height: 52,
-                          borderRadius: 14,
-                          outline:
-                            selectedStaff === staff.id
-                              ? "2px dashed #635BFF"
-                              : "2px solid transparent",
-                          outlineOffset: "2px",
-                        }}
-                      >
-                        <Image
-                          src={staff.avatar}
-                          alt={staff.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <span className="text-[11px] font-semibold font-manrope text-[#29343D] text-center w-full px-1 truncate">
-                        {staff.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right arrow */}
-              <button
-                onClick={() => slide("r")}
-                className="absolute z-30 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-white border border-[#DDE3EC] shadow-sm hover:bg-[#F4F6FA] transition-colors cursor-pointer"
-                style={{ right: 6 }}
-              >
-                <ChevronRight
-                  size={14}
-                  strokeWidth={2}
-                  className="text-[#7A8FA6]"
-                />
-              </button>
-            </div>
-
-            {/* â”€â”€ Grid â”€â”€ */}
-            <div
-              ref={bodyRef}
-              className="flex-1 overflow-auto"
-              onScroll={onBodyScroll}
-              style={{
-                scrollbarWidth: "thin",
-                scrollbarColor: "#D1D9E8 transparent",
-              }}
-            >
-              <div
-                className="relative"
-                style={{ width: TIME_W + totalW, height: SLOTS.length * ROW_H }}
-              >
-                {SLOTS.map((slot, idx) => (
-                  <div
-                    key={idx}
-                    className="absolute flex w-full"
-                    style={{ top: idx * ROW_H, height: ROW_H }}
-                  >
-                    {/* Time gutter */}
-                    <div
-                      className={`shrink-0 relative border-r ${slot.isHour ? "border-t" : ""} border-[#E0E6EB]`}
-                      style={{ width: TIME_W }}
-                    >
-                      {slot.isHour && (
-                        <span
-                          className="absolute right-3 text-[12px] font-manrope text-[#999] whitespace-nowrap leading-none"
-                          style={{ top: 7 }}
-                        >
-                          {slot.label}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Staff cells */}
-                    {STAFF.map((staff) => {
-                      const isHover =
-                        hoverCell?.sid === staff.id && hoverCell?.idx === idx;
-                      return (
-                        <div
-                          key={staff.id}
-                          className={`shrink-0 border-r border-[#EEF2F8] last:border-r-0 transition-colors
-                            ${slot.isHour ? "border-t border-t-[#DDE3EC]" : "border-t border-t-[#F2F4F7]"}
-                            ${isHover ? "bg-[#F0EEFF]" : "hover:bg-[#FAFAFE]"}`}
-                          style={{ width: colW, height: ROW_H }}
-                          onDragOver={(e) => onOver(e, staff.id, idx)}
-                          onDrop={(e) => onDrop(e, staff.id, idx)}
-                        />
-                      );
-                    })}
-                  </div>
-                ))}
-
-                {/* Appointment overlays */}
-                {appointments.map((appt, i) => {
-                  const ci = STAFF.findIndex((s) => s.id === appt.staffId);
-                  if (ci === -1) return null;
-                  const svc = SERVICES.find((s) => s.id === appt.serviceId);
-                  return (
-                    <div
-                      key={i}
-                      className="absolute z-10 bg-[#ECEAFF] rounded-[7px] px-2.5 py-1.5"
-                      style={{
-                        top: appt.startSlot * ROW_H + 1,
-                        left: TIME_W + ci * colW + 3,
-                        width: colW - 6,
-                        height: appt.duration * ROW_H - 2,
-                        borderLeft: "3px solid #635BFF",
-                      }}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-[10px] font-bold font-manrope text-[#635BFF] leading-tight">
-                            {svc?.name}
-                          </p>
-                          <p className="text-[9px] font-manrope text-[#635BFF] opacity-70">
-                            {svc?.duration}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => removeAppt(i)}
-                          className="text-[#635BFF] opacity-40 hover:opacity-80 text-sm leading-none cursor-pointer"
-                        >
-                          Ã—
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          {/* ── Calendar Grids ── */}
+          {activePeriod === "Day" && (
+            <RescheduleDayView
+              STAFF={STAFF}
+              SERVICES={SERVICES}
+              SLOTS={SLOTS}
+              appointments={appointments}
+              TIME_W={TIME_W}
+              ROW_H={ROW_H}
+              MIN_COL={MIN_COL}
+              hoverCell={hoverCell}
+              onOver={onOver}
+              onDrop={onDrop}
+              removeAppt={removeAppt}
+            />
+          )}
+          {activePeriod === "Week" && (
+            <RescheduleWeekView
+              STAFF={STAFF}
+              SERVICES={SERVICES}
+              SLOTS={SLOTS}
+              appointments={appointments}
+              TIME_W={TIME_W}
+              ROW_H={ROW_H}
+              MIN_COL={MIN_COL}
+              hoverCell={hoverCell}
+              onOver={onOver}
+              onDrop={onDrop}
+              removeAppt={removeAppt}
+              currentDate={currentDate}
+              selectedTeamIds={selectedTeamIds}
+            />
+          )}
+          {activePeriod === "Month" && (
+            <RescheduleMonthView
+              STAFF={STAFF}
+              SERVICES={SERVICES}
+              appointments={appointments}
+              hoverCell={hoverCell}
+              onOver={onOver}
+              onDrop={onDrop}
+              removeAppt={removeAppt}
+              currentDate={currentDate}
+              selectedTeamIds={selectedTeamIds}
+            />
+          )}
         </div>
         <div className="shrink-0 flex justify-end p-[30px_30px] pt-[0px]">
           <button
@@ -427,8 +301,6 @@ export default function RescheduleAppointmentContent() {
           </button>
         </div>
       </div>
-
-      {/* â”€â”€ Save â”€â”€ */}
     </div>
   );
 }

@@ -30,7 +30,7 @@ const INITIAL_SERVICES: ServiceRow[] = [
     startTime: "11:00",
     duration: "15 min",
     employee: "Maria Rodriguez",
-    employeeAvatar: "/images/avator.png",
+    employeeAvatar: "/avatar/icon1.png",
   },
 ];
 
@@ -63,7 +63,7 @@ export default function ReviewAppointmentTable() {
         startTime: "11:00",
         duration: "15 min",
         employee: "Maria Rodriguez",
-        employeeAvatar: "/images/avator.png",
+        employeeAvatar: "/avatar/icon1.png",
       },
     ]);
   }
@@ -73,7 +73,6 @@ export default function ReviewAppointmentTable() {
 
   return (
     <>
-      {/* â”€â”€ Modals â”€â”€ */}
       <AddServiceModal
         open={addServiceOpen}
         onClose={() => setAddServiceOpen(false)}
@@ -86,13 +85,10 @@ export default function ReviewAppointmentTable() {
       />
 
       <div className="flex flex-col font-manrope">
-        {/* â”€â”€ Table card â”€â”€ */}
         <div className="bg-white rounded-2xl border border-[#EBEBEB] px-8 py-7">
           <h2 className="text-lg font-bold text-[#1A1A2E] mb-6">
             Review Appointment
           </h2>
-
-          {/* â”€â”€ Scrollable table wrapper (mobile: scrolls, desktop: full width) â”€â”€ */}
           <div className="overflow-x-auto -mx-8 px-8">
             <div className="min-w-[700px]">
               {/* Table header */}
@@ -183,17 +179,13 @@ export default function ReviewAppointmentTable() {
               </div>
             </div>
           </div>
-          {/* â”€â”€ end scrollable table wrapper â”€â”€ */}
-
-          {/* â”€â”€ Total bar â”€â”€ */}
           <div className="mt-[48px] bg-white rounded-xl border border-[#EBEBEB] p-[30px] flex items-center justify-between">
             <span className="text-base font-bold text-[#1A1A2E]">Total</span>
             <span className="text-base font-bold text-[#1A1A2E]">
-              â‚¬ {totalPrice}
+              € {totalPrice}
             </span>
           </div>
 
-          {/* â”€â”€ Bottom action bar â”€â”€ */}
           <AddBottombar
             moreRef={moreRef}
             setMoreOpen={setMoreOpen}

@@ -1,35 +1,35 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { Client } from "@/@types/salon-owner/Client.type";
-import IUser from "@/app/account-protal/svg/IUser";
+import IUser from "@/components/svg/IUser";
 
 const RECENT_CLIENTS: Client[] = [
   {
     id: "c1",
     name: "Maria Fernandez",
     phone: "+39 345 678 9123",
-    avatar: "/images/avator.png",
+    avatar: "/avatar/icon1.png",
   },
   {
     id: "c2",
     name: "Virgie Sutton",
     phone: "+39 345 678 9123",
-    avatar: "/images/avator.png",
+    avatar: "/avatar/icon2.png",
   },
   {
     id: "c3",
     name: "Virgie Sutton",
     phone: "+39 345 678 9123",
-    avatar: "/images/avator.png",
+    avatar: "/avatar/icon3.png",
   },
   {
     id: "c4",
     name: "Lois Gregory",
     phone: "Staff",
-    avatar: "/images/avator.png",
+    avatar: "/avatar/icon1.png",
     isStaff: true,
   },
 ];
@@ -55,9 +55,7 @@ function WalkInIcon() {
 }
 
 function AddClientIcon() {
-  return (
-    <IUser width={40} height={40} color="#635BFF"/>
-  );
+  return <IUser width={40} height={40} color="#635BFF" />;
 }
 
 export default function AddAppontClinetSection({
@@ -117,7 +115,6 @@ export default function AddAppontClinetSection({
         </button>
       </div>
 
-      {/* â”€â”€ Recently Scheduled Clients â”€â”€ */}
       <div>
         <p className="text-sm font-semibold text-[#29343D] mb-4">
           Recently Scheduled Clients

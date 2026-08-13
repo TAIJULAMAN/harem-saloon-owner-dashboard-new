@@ -32,7 +32,7 @@ export default function SettingsPageContent() {
         {/* Left Side: Back Arrow and Title */}
         <div className="flex items-center gap-3">
           <Link
-            href="/dashboard/appointments"
+            href="/dashboard/appointment"
             className="w-9 h-9 flex items-center justify-center bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#1E293B] rounded-xl transition-colors shrink-0"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -53,7 +53,7 @@ export default function SettingsPageContent() {
           <Home className="w-3.5 h-3.5" />
           <span className="opacity-60">/</span>
           <Link
-            href="/dashboard/appointments"
+            href="/dashboard/appointment"
             className="hover:text-[#635BFF] transition-colors"
           >
             Appointments
@@ -73,7 +73,7 @@ export default function SettingsPageContent() {
       <div className="bg-white rounded-2xl shadow-sm border border-[#E2E8F0] p-1.5 flex flex-wrap gap-1.5">
         <button
           onClick={() => {
-            router.push("/dashboard/appointments/settings?tab=general");
+            router.push("/dashboard/appointment/settings?tab=general");
           }}
           className={`px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all ${
             activeTab === "general"
@@ -85,7 +85,7 @@ export default function SettingsPageContent() {
         </button>
         <button
           onClick={() => {
-            router.push("/dashboard/appointments/settings?tab=notifications");
+            router.push("/dashboard/appointment/settings?tab=notifications");
           }}
           className={`px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all ${
             activeTab === "notifications"
@@ -97,7 +97,7 @@ export default function SettingsPageContent() {
         </button>
         <button
           onClick={() => {
-            router.push("/dashboard/appointments/settings?tab=employees");
+            router.push("/dashboard/appointment/settings?tab=employees");
           }}
           className={`px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all ${
             activeTab === "employees"

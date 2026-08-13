@@ -1,9 +1,8 @@
-﻿import IPayments from "@/app/account-protal/svg/IPayments";
-import { X } from "lucide-react";
+import IPayments from "@/components/svg/IPayments";
+import { X, QrCode } from "lucide-react";
 import { useEffect, useState } from "react";
-import GiftCardIcon from "../../dashboard/checkout/GiftCardIcon";
 import ICard from "./ICard";
-import QRIcon from "../../dashboard/checkout/QRIcon";
+import GiftCardIconNav from "@/components/svg/GiftCardIconNav";
 
 export default function RequestUpfrontPaymentModal({
   open,
@@ -21,7 +20,7 @@ export default function RequestUpfrontPaymentModal({
     {
       key: "giftcard",
       label: "Gift Card",
-      icon: <GiftCardIcon size={65} color="#635BFF" />,
+      icon: <GiftCardIconNav size={65} color="#635BFF" />,
     },
     {
       key: "card",
@@ -31,7 +30,7 @@ export default function RequestUpfrontPaymentModal({
     {
       key: "qr",
       label: "QR Code",
-      icon: <QRIcon />,
+      icon: <QrCode size={38} color="#635BFF" />,
     },
   ];
 

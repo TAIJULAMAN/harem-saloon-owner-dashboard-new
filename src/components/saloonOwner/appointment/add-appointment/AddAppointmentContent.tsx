@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 import { useState, useRef } from "react";
-import PageHeader from "../../common-component/PageHeader";
+import PageHeader from "@/components/common-component/PageHeader";
 import AddAppointTabs from "./AddAppointTabs";
 import AddAppontClinetSection from "./AddAppontClinetSection";
 import RescheduleAppointmentContent from "../reschedule/RescheduleAppointmentContent";

@@ -1,13 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
-import AppointmentServiceList from "../../common-component/AppointmentServiceList";
 import { ServiceRow } from "@/@types/salon-owner/service.type";
-import CashIcon from "../../dashboard/checkout/CashIcon";
-import GiftCardIcon from "../../dashboard/checkout/GiftCardIcon";
-import CardIcon from "../../dashboard/checkout/CardIcon";
-import QRIcon from "../../dashboard/checkout/QRIcon";
-
+import AppointmentServiceList from "@/components/common-component/AppointmentServiceList";
+import { Banknote, Gift, CreditCard, QrCode } from "lucide-react";
 const PAYMENT_SERVICES: ServiceRow[] = [
   {
     id: "sr1",
@@ -35,22 +31,22 @@ const PAYMENT_METHODS_DATA = [
   {
     key: "cash",
     label: "Cash",
-    icon: <CashIcon />,
+    icon: <Banknote size={65} color="#635BFF" />,
   },
   {
     key: "gift",
     label: "Gift Card",
-    icon: <GiftCardIcon size={65} color="#635BFF" />,
+    icon: <Gift size={65} color="#635BFF" />,
   },
   {
     key: "card",
     label: "Card Terminal",
-    icon: <CardIcon />,
+    icon: <CreditCard size={65} color="#635BFF" />,
   },
   {
     key: "qr",
     label: "QR Code",
-    icon: <QRIcon />,
+    icon: <QrCode size={65} color="#635BFF" />,
   },
 ];
 

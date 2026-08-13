@@ -35,7 +35,8 @@ export default function ImportAppointmentsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState<ImportedAppointment | null>(null);
+  const [selectedRowData, setSelectedRowData] =
+    useState<ImportedAppointment | null>(null);
 
   // Video Player State
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -196,7 +197,6 @@ export default function ImportAppointmentsPage() {
     }
   };
 
-  // Drag and Drop handlers
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsHoveringDropzone(false);
@@ -238,7 +238,7 @@ export default function ImportAppointmentsPage() {
       <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
-            href="/dashboard/appointments"
+            href="/dashboard/appointment"
             className="text-[#64748B] hover:text-[#635BFF] transition-colors p-1 rounded-lg hover:bg-[#EEF2FF]"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -297,12 +297,22 @@ export default function ImportAppointmentsPage() {
                 className="hover:opacity-80 transition-opacity flex items-center justify-center"
               >
                 {isPlaying ? (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <rect x="6" y="4" width="4" height="16" />
                     <rect x="14" y="4" width="4" height="16" />
                   </svg>
                 ) : (
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M5 3l14 9-14 9V3z" />
                   </svg>
                 )}
@@ -367,7 +377,12 @@ export default function ImportAppointmentsPage() {
                 </button>
                 {/* More Options */}
                 <button className="hover:opacity-80 transition-opacity flex items-center justify-center">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <circle cx="12" cy="5" r="2" />
                     <circle cx="12" cy="12" r="2" />
                     <circle cx="12" cy="19" r="2" />
@@ -544,7 +559,9 @@ export default function ImportAppointmentsPage() {
         <div className="bg-white rounded-lg shadow-sm border border-[#E2E8F0] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100 fill-mode-both">
           {/* Table Header Controls */}
           <div className="p-5 border-b border-[#E2E8F0] flex items-center justify-between">
-            <h2 className="text-[14px] font-bold text-[#1E293B]">Imported List</h2>
+            <h2 className="text-[14px] font-bold text-[#1E293B]">
+              Imported List
+            </h2>
             <div className="flex items-center gap-3">
               {selectedRows.length > 0 ? (
                 <>
@@ -580,8 +597,8 @@ export default function ImportAppointmentsPage() {
                         selectedRows.length === mockImportedData.length
                           ? "bg-[#635BFF] border-[#635BFF] text-white"
                           : selectedRows.length > 0
-                          ? "bg-[#635BFF] border-[#635BFF] text-white"
-                          : "bg-white border-[#CBD5E1]"
+                            ? "bg-[#635BFF] border-[#635BFF] text-white"
+                            : "bg-white border-[#CBD5E1]"
                       }`}
                     >
                       {selectedRows.length === mockImportedData.length ? (
@@ -651,9 +668,7 @@ export default function ImportAppointmentsPage() {
               <tbody>
                 {mockImportedData.map((row, index) => (
                   <React.Fragment key={index}>
-                    <tr
-                      className="border-b border-[#E2E8F0] last:border-b-0 hover:bg-[#F8FAFC] transition-colors"
-                    >
+                    <tr className="border-b border-[#E2E8F0] last:border-b-0 hover:bg-[#F8FAFC] transition-colors">
                       <td className="px-6 py-3 border-r border-[#E2E8F0]">
                         <button
                           onClick={() => toggleSelectRow(row.id)}
@@ -720,11 +735,13 @@ export default function ImportAppointmentsPage() {
                           >
                             <Check className="w-4 h-4 stroke-[3px]" />
                           </button>
-                          
+
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setExpandedRowId(expandedRowId === row.id ? null : row.id);
+                              setExpandedRowId(
+                                expandedRowId === row.id ? null : row.id,
+                              );
                             }}
                             className="w-7 h-7 rounded-lg hover:bg-slate-50 flex items-center justify-center text-[#635BFF] transition-colors"
                           >
@@ -740,12 +757,15 @@ export default function ImportAppointmentsPage() {
 
                     {expandedRowId === row.id && (
                       <tr className="bg-[#F8FAFC]/60">
-                        <td colSpan={10} className="px-6 py-6 border-b border-[#E2E8F0]">
+                        <td
+                          colSpan={10}
+                          className="px-6 py-6 border-b border-[#E2E8F0]"
+                        >
                           <div className="flex flex-col items-center justify-center space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
                             <h3 className="text-[13px] font-bold text-[#475569] tracking-wider uppercase">
                               Booking Order
                             </h3>
-                            
+
                             {/* Steps container */}
                             <div className="flex items-center justify-between w-full max-w-[620px] relative px-6">
                               {/* Connector line */}
@@ -753,82 +773,154 @@ export default function ImportAppointmentsPage() {
 
                               {/* Step 1 */}
                               <div className="flex flex-col items-center z-10 space-y-2">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
-                                  row.status === "Booked" ? "bg-amber-100 text-amber-700" :
-                                  row.status === "Started" ? "bg-sky-100 text-sky-700" :
-                                  row.status === "Cancelled" ? "bg-rose-100 text-rose-700" :
-                                  row.status === "Completed" ? "bg-emerald-100 text-emerald-700" :
-                                  "bg-indigo-50 text-indigo-600"
-                                }`}>
-                                  {row.status === "Booked" ? "Overdue" :
-                                   row.status === "Started" ? "Doing" :
-                                   row.status === "Cancelled" ? "Canceled" :
-                                   row.status === "Completed" ? "Completed" : "To Do"}
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
+                                    row.status === "Booked"
+                                      ? "bg-amber-100 text-amber-700"
+                                      : row.status === "Started"
+                                        ? "bg-sky-100 text-sky-700"
+                                        : row.status === "Cancelled"
+                                          ? "bg-rose-100 text-rose-700"
+                                          : row.status === "Completed"
+                                            ? "bg-emerald-100 text-emerald-700"
+                                            : "bg-indigo-50 text-indigo-600"
+                                  }`}
+                                >
+                                  {row.status === "Booked"
+                                    ? "Overdue"
+                                    : row.status === "Started"
+                                      ? "Doing"
+                                      : row.status === "Cancelled"
+                                        ? "Canceled"
+                                        : row.status === "Completed"
+                                          ? "Completed"
+                                          : "To Do"}
                                 </span>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
-                                  row.status === "Booked" ? "border-amber-500 text-amber-600" :
-                                  row.status === "Started" ? "border-sky-500 text-sky-600" :
-                                  row.status === "Cancelled" ? "border-rose-500 text-rose-600" :
-                                  row.status === "Completed" ? "border-emerald-500 text-emerald-600" :
-                                  "border-indigo-500 text-indigo-600"
-                                }`}>
-                                  {row.status === "Cancelled" ? <X className="w-4 h-4 stroke-[3px]" /> :
-                                   row.status === "Completed" ? <Check className="w-4 h-4 stroke-[3px]" /> : "1"}
+                                <div
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
+                                    row.status === "Booked"
+                                      ? "border-amber-500 text-amber-600"
+                                      : row.status === "Started"
+                                        ? "border-sky-500 text-sky-600"
+                                        : row.status === "Cancelled"
+                                          ? "border-rose-500 text-rose-600"
+                                          : row.status === "Completed"
+                                            ? "border-emerald-500 text-emerald-600"
+                                            : "border-indigo-500 text-indigo-600"
+                                  }`}
+                                >
+                                  {row.status === "Cancelled" ? (
+                                    <X className="w-4 h-4 stroke-[3px]" />
+                                  ) : row.status === "Completed" ? (
+                                    <Check className="w-4 h-4 stroke-[3px]" />
+                                  ) : (
+                                    "1"
+                                  )}
                                 </div>
                                 <div className="text-center">
-                                  <div className="text-[11px] font-extrabold text-[#1E293B]">12:00-12:05</div>
-                                  <div className="text-[10px] font-bold text-[#475569]">Haircut</div>
-                                  <div className="text-[10px] font-medium text-slate-400">Angelica</div>
+                                  <div className="text-[11px] font-extrabold text-[#1E293B]">
+                                    12:00-12:05
+                                  </div>
+                                  <div className="text-[10px] font-bold text-[#475569]">
+                                    Haircut
+                                  </div>
+                                  <div className="text-[10px] font-medium text-slate-400">
+                                    Angelica
+                                  </div>
                                 </div>
                               </div>
 
                               {/* Step 2 */}
                               <div className="flex flex-col items-center z-10 space-y-2">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
-                                  row.status === "Cancelled" ? "bg-rose-100 text-rose-700" :
-                                  row.status === "Completed" ? "bg-emerald-100 text-emerald-700" :
-                                  "bg-slate-100 text-slate-500"
-                                }`}>
-                                  {row.status === "Cancelled" ? "Canceled" :
-                                   row.status === "Completed" ? "Completed" : "To Do"}
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
+                                    row.status === "Cancelled"
+                                      ? "bg-rose-100 text-rose-700"
+                                      : row.status === "Completed"
+                                        ? "bg-emerald-100 text-emerald-700"
+                                        : "bg-slate-100 text-slate-500"
+                                  }`}
+                                >
+                                  {row.status === "Cancelled"
+                                    ? "Canceled"
+                                    : row.status === "Completed"
+                                      ? "Completed"
+                                      : "To Do"}
                                 </span>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
-                                  row.status === "Cancelled" ? "border-rose-500 text-rose-600" :
-                                  row.status === "Completed" ? "border-emerald-500 text-emerald-600" :
-                                  "border-slate-300 text-slate-500"
-                                }`}>
-                                  {row.status === "Cancelled" ? <X className="w-4 h-4 stroke-[3px]" /> :
-                                   row.status === "Completed" ? <Check className="w-4 h-4 stroke-[3px]" /> : "2"}
+                                <div
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
+                                    row.status === "Cancelled"
+                                      ? "border-rose-500 text-rose-600"
+                                      : row.status === "Completed"
+                                        ? "border-emerald-500 text-emerald-600"
+                                        : "border-slate-300 text-slate-500"
+                                  }`}
+                                >
+                                  {row.status === "Cancelled" ? (
+                                    <X className="w-4 h-4 stroke-[3px]" />
+                                  ) : row.status === "Completed" ? (
+                                    <Check className="w-4 h-4 stroke-[3px]" />
+                                  ) : (
+                                    "2"
+                                  )}
                                 </div>
                                 <div className="text-center">
-                                  <div className="text-[11px] font-extrabold text-[#1E293B]">12:05-12:10</div>
-                                  <div className="text-[10px] font-bold text-[#475569]">Haircut</div>
-                                  <div className="text-[10px] font-medium text-slate-400">Angelica</div>
+                                  <div className="text-[11px] font-extrabold text-[#1E293B]">
+                                    12:05-12:10
+                                  </div>
+                                  <div className="text-[10px] font-bold text-[#475569]">
+                                    Haircut
+                                  </div>
+                                  <div className="text-[10px] font-medium text-slate-400">
+                                    Angelica
+                                  </div>
                                 </div>
                               </div>
 
                               {/* Step 3 */}
                               <div className="flex flex-col items-center z-10 space-y-2">
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
-                                  row.status === "Cancelled" ? "bg-rose-100 text-rose-700" :
-                                  row.status === "Completed" ? "bg-emerald-100 text-emerald-700" :
-                                  "bg-slate-100 text-slate-500"
-                                }`}>
-                                  {row.status === "Cancelled" ? "Canceled" :
-                                   row.status === "Completed" ? "Completed" : "To Do"}
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide ${
+                                    row.status === "Cancelled"
+                                      ? "bg-rose-100 text-rose-700"
+                                      : row.status === "Completed"
+                                        ? "bg-emerald-100 text-emerald-700"
+                                        : "bg-slate-100 text-slate-500"
+                                  }`}
+                                >
+                                  {row.status === "Cancelled"
+                                    ? "Canceled"
+                                    : row.status === "Completed"
+                                      ? "Completed"
+                                      : "To Do"}
                                 </span>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
-                                  row.status === "Cancelled" ? "border-rose-500 text-rose-600" :
-                                  row.status === "Completed" ? "border-emerald-500 text-emerald-600" :
-                                  "border-slate-300 text-slate-500"
-                                }`}>
-                                  {row.status === "Cancelled" ? <X className="w-4 h-4 stroke-[3px]" /> :
-                                   row.status === "Completed" ? <Check className="w-4 h-4 stroke-[3px]" /> : "3"}
+                                <div
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] border-2 bg-white ${
+                                    row.status === "Cancelled"
+                                      ? "border-rose-500 text-rose-600"
+                                      : row.status === "Completed"
+                                        ? "border-emerald-500 text-emerald-600"
+                                        : "border-slate-300 text-slate-500"
+                                  }`}
+                                >
+                                  {row.status === "Cancelled" ? (
+                                    <X className="w-4 h-4 stroke-[3px]" />
+                                  ) : row.status === "Completed" ? (
+                                    <Check className="w-4 h-4 stroke-[3px]" />
+                                  ) : (
+                                    "3"
+                                  )}
                                 </div>
                                 <div className="text-center">
-                                  <div className="text-[11px] font-extrabold text-[#1E293B]">12:10-12:15</div>
-                                  <div className="text-[10px] font-bold text-[#475569]">Haircut</div>
-                                  <div className="text-[10px] font-medium text-slate-400">Angelica</div>
+                                  <div className="text-[11px] font-extrabold text-[#1E293B]">
+                                    12:10-12:15
+                                  </div>
+                                  <div className="text-[10px] font-bold text-[#475569]">
+                                    Haircut
+                                  </div>
+                                  <div className="text-[10px] font-medium text-slate-400">
+                                    Angelica
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -869,270 +961,319 @@ export default function ImportAppointmentsPage() {
       {/* Floating Save Button */}
       <div className="fixed bottom-6 right-6 z-40">
         <Link
-          href="/dashboard/appointments"
+          href="/dashboard/appointment"
           className="bg-[#635BFF] hover:bg-[#524be0] text-white px-8 py-3 rounded-lg text-[14px] font-bold shadow-lg shadow-[#635BFF]/30 transition-colors animate-in zoom-in-95 duration-300 block text-center"
         >
           Save
         </Link>
       </div>
       {/* Service Receipt Modal */}
-      {isReceiptOpen && selectedRowData && (() => {
-        const totalVal = 170.00;
-        const taxableVal = (totalVal / 1.22).toFixed(2);
-        const vatVal = (totalVal - parseFloat(taxableVal)).toFixed(2);
+      {isReceiptOpen &&
+        selectedRowData &&
+        (() => {
+          const totalVal = 170.0;
+          const taxableVal = (totalVal / 1.22).toFixed(2);
+          const vatVal = (totalVal - parseFloat(taxableVal)).toFixed(2);
 
-        return (
-          <Modal
-            isOpen={isReceiptOpen}
-            onClose={() => setIsReceiptOpen(false)}
-            maxWidth="max-w-4xl"
-            showCloseButton={false}
-          >
-            <div className="space-y-6">
-              {/* Receipt Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <button
-                  onClick={() => setIsReceiptOpen(false)}
-                  className="flex items-center gap-2 hover:text-[#635BFF] transition-colors group text-left"
-                >
-                  <ChevronLeft className="w-5 h-5 text-[#64748B] group-hover:text-[#635BFF]" />
-                  <div>
-                    <h2 className="text-[15px] font-extrabold text-[#1E293B] font-manrope">
-                      Service Receipt
-                    </h2>
-                    <p className="text-[11px] font-bold text-slate-400">
-                      Italian Fiscal Invoice
-                    </p>
-                  </div>
-                </button>
-                <button
-                  onClick={() => alert("Downloading PDF Receipt...")}
-                  className="bg-[#EEF2FF] hover:bg-[#D3DCFF] text-[#635BFF] px-4 py-2 rounded-xl font-bold text-[12px] flex items-center gap-1.5 transition-colors border border-[#C7D2FE] shadow-sm"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Download PDF
-                </button>
-              </div>
+          return (
+            <Modal
+              isOpen={isReceiptOpen}
+              onClose={() => setIsReceiptOpen(false)}
+              maxWidth="max-w-4xl"
+              showCloseButton={false}
+            >
+              <div className="space-y-6">
+                {/* Receipt Header */}
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                  <button
+                    onClick={() => setIsReceiptOpen(false)}
+                    className="flex items-center gap-2 hover:text-[#635BFF] transition-colors group text-left"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-[#64748B] group-hover:text-[#635BFF]" />
+                    <div>
+                      <h2 className="text-[15px] font-extrabold text-[#1E293B] font-manrope">
+                        Service Receipt
+                      </h2>
+                      <p className="text-[11px] font-bold text-slate-400">
+                        Italian Fiscal Invoice
+                      </p>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => alert("Downloading PDF Receipt...")}
+                    className="bg-[#EEF2FF] hover:bg-[#D3DCFF] text-[#635BFF] px-4 py-2 rounded-xl font-bold text-[12px] flex items-center gap-1.5 transition-colors border border-[#C7D2FE] shadow-sm"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download PDF
+                  </button>
+                </div>
 
-              {/* Electronic Invoice Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="border border-[#E2E8F0] rounded-2xl p-4 bg-slate-50/50">
-                  <div className="text-[10px] font-extrabold text-[#94A3B8] uppercase tracking-wider">
-                    Electronic Invoice
+                {/* Electronic Invoice Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-[#E2E8F0] rounded-2xl p-4 bg-slate-50/50">
+                    <div className="text-[10px] font-extrabold text-[#94A3B8] uppercase tracking-wider">
+                      Electronic Invoice
+                    </div>
+                    <div className="text-[15px] font-extrabold text-[#1E293B] mt-1.5">
+                      2025-000{selectedRowData.id}
+                    </div>
+                    <div className="text-[11px] font-semibold text-[#64748B] mt-0.5">
+                      Receipt No.
+                    </div>
                   </div>
-                  <div className="text-[15px] font-extrabold text-[#1E293B] mt-1.5">
-                    2025-000{selectedRowData.id}
-                  </div>
-                  <div className="text-[11px] font-semibold text-[#64748B] mt-0.5">
-                    Receipt No.
+
+                  <div className="border border-[#E2E8F0] rounded-2xl p-4 bg-slate-50/50">
+                    <div className="text-[10px] font-extrabold text-[#94A3B8] uppercase tracking-wider">
+                      Date
+                    </div>
+                    <div className="text-[15px] font-extrabold text-[#1E293B] mt-1.5">
+                      11/30/2024
+                    </div>
+                    <div className="text-[11px] font-semibold text-[#64748B] mt-0.5">
+                      Date Issued
+                    </div>
                   </div>
                 </div>
 
-                <div className="border border-[#E2E8F0] rounded-2xl p-4 bg-slate-50/50">
-                  <div className="text-[10px] font-extrabold text-[#94A3B8] uppercase tracking-wider">
-                    Date
+                {/* Transferor & Transferee Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Transferor */}
+                  <div className="border border-[#E2E8F0] rounded-2xl p-5 space-y-3 bg-white">
+                    <h4 className="text-[12px] font-extrabold text-[#1E293B] border-b border-slate-100 pb-2">
+                      Transferor/Provider
+                    </h4>
+                    <div className="space-y-1 text-[12px] font-semibold text-[#475569]">
+                      <div className="font-extrabold text-[#1E293B] text-[13px]">
+                        Bella Vista Salon
+                      </div>
+                      <div>Via Roma, 123</div>
+                      <div>20121 Milan (MI) - Italy</div>
+                      <div className="pt-1.5 flex flex-wrap gap-x-3 text-[11px] text-slate-400">
+                        <span>
+                          PIVA:{" "}
+                          <strong className="text-[#475569]">
+                            IT12345678901
+                          </strong>
+                        </span>
+                        <span>
+                          Tax Code:{" "}
+                          <strong className="text-[#475569]">
+                            12345678901
+                          </strong>
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-slate-400">
+                        PEC:{" "}
+                        <strong className="text-[#475569]">
+                          amministrazione@pec.salonflow.it
+                        </strong>
+                      </div>
+                      <div className="text-[11px] text-slate-400">
+                        Recipient Code:{" "}
+                        <strong className="text-[#475569]">XXXXXXX</strong>
+                      </div>
+                      <div className="pt-1 flex flex-wrap gap-x-3 text-[11px] text-slate-400">
+                        <span>
+                          Tel:{" "}
+                          <strong className="text-[#475569]">
+                            +39 02 1234567
+                          </strong>
+                        </span>
+                        <span>
+                          Email:{" "}
+                          <strong className="text-[#475569]">
+                            info@salonflow.it
+                          </strong>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-[15px] font-extrabold text-[#1E293B] mt-1.5">
-                    11/30/2024
-                  </div>
-                  <div className="text-[11px] font-semibold text-[#64748B] mt-0.5">
-                    Date Issued
+
+                  {/* Transferee */}
+                  <div className="border border-[#E2E8F0] rounded-2xl p-5 space-y-3 bg-white">
+                    <h4 className="text-[12px] font-extrabold text-[#1E293B] border-b border-slate-100 pb-2">
+                      Transferee/Client
+                    </h4>
+                    <div className="space-y-1 text-[12px] font-semibold text-[#475569]">
+                      <div className="font-extrabold text-[#1E293B] text-[13px]">
+                        Amelia Rodriguez (Ref: {selectedRowData.clientRef})
+                      </div>
+                      <div>Via Esempio, 458</div>
+                      <div>10100 Turin (TO) - Italy</div>
+                      <div className="pt-1.5 text-[11px] text-slate-400">
+                        Tax Code:{" "}
+                        <strong className="text-[#475569]">
+                          RSTGPP90A01L219Y
+                        </strong>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Transferor & Transferee Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Transferor */}
-                <div className="border border-[#E2E8F0] rounded-2xl p-5 space-y-3 bg-white">
+                {/* Service Description Table */}
+                <div className="border border-[#E2E8F0] rounded-2xl overflow-hidden bg-white">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#F8F9FE] border-b border-[#E2E8F0] text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider">
+                        <th className="px-5 py-3 border-r border-[#E2E8F0] w-[40%]">
+                          Service Name
+                        </th>
+                        <th className="px-5 py-3 border-r border-[#E2E8F0] text-center w-[15%]">
+                          Amount
+                        </th>
+                        <th className="px-5 py-3 border-r border-[#E2E8F0] text-right w-[15%]">
+                          Unit Price
+                        </th>
+                        <th className="px-5 py-3 border-r border-[#E2E8F0] text-center w-[15%]">
+                          VAT Rate
+                        </th>
+                        <th className="px-5 py-3 text-right w-[15%]">
+                          Total Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="text-[12px] font-semibold text-[#475569] border-b border-slate-100 last:border-b-0">
+                        <td className="px-5 py-4 border-r border-[#E2E8F0] font-extrabold text-[#1E293B]">
+                          Haircut (Ref: {selectedRowData.serviceRef})
+                        </td>
+                        <td className="px-5 py-4 border-r border-[#E2E8F0] text-center">
+                          1
+                        </td>
+                        <td className="px-5 py-4 border-r border-[#E2E8F0] text-right">
+                          €{taxableVal}
+                        </td>
+                        <td className="px-5 py-4 border-r border-[#E2E8F0] text-center">
+                          22%
+                        </td>
+                        <td className="px-5 py-4 text-right font-extrabold text-[#1E293B]">
+                          €{totalVal.toFixed(2)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* VAT & Totals */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* VAT Summary */}
+                  <div className="border border-[#E2E8F0] rounded-2xl p-4 space-y-2 bg-white">
+                    <div className="text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider mb-2">
+                      VAT Summary
+                    </div>
+                    <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
+                      <span>Rate</span>
+                      <span>22%</span>
+                    </div>
+                    <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
+                      <span>Taxable</span>
+                      <span>€{taxableVal}</span>
+                    </div>
+                    <div className="flex justify-between text-[12px] font-semibold text-[#475569]">
+                      <span>IVA (VAT)</span>
+                      <span>€{vatVal}</span>
+                    </div>
+                  </div>
+
+                  {/* Document Totals */}
+                  <div className="border border-[#E2E8F0] rounded-2xl p-4 space-y-2 bg-white">
+                    <div className="text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider mb-2">
+                      Document Totals
+                    </div>
+                    <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
+                      <span>Total Taxable Amount</span>
+                      <span>€{taxableVal}</span>
+                    </div>
+                    <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
+                      <span>Total VAT</span>
+                      <span>€{vatVal}</span>
+                    </div>
+                    <div className="flex justify-between text-[13px] font-extrabold text-[#635BFF]">
+                      <span>Document Total</span>
+                      <span>€{totalVal.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment Methods */}
+                <div className="border border-[#E2E8F0] rounded-2xl p-5 bg-white space-y-3">
                   <h4 className="text-[12px] font-extrabold text-[#1E293B] border-b border-slate-100 pb-2">
-                    Transferor/Provider
+                    Payment Methods
                   </h4>
-                  <div className="space-y-1 text-[12px] font-semibold text-[#475569]">
-                    <div className="font-extrabold text-[#1E293B] text-[13px]">
-                      Bella Vista Salon
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-[12px] font-semibold text-[#475569]">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                        Mode
+                      </div>
+                      <div className="text-[#1E293B] font-extrabold mt-1">
+                        Credit Card
+                      </div>
                     </div>
-                    <div>Via Roma, 123</div>
-                    <div>20121 Milan (MI) - Italy</div>
-                    <div className="pt-1.5 flex flex-wrap gap-x-3 text-[11px] text-slate-400">
-                      <span>PIVA: <strong className="text-[#475569]">IT12345678901</strong></span>
-                      <span>Tax Code: <strong className="text-[#475569]">12345678901</strong></span>
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                        Payment Date
+                      </div>
+                      <div className="text-[#1E293B] font-extrabold mt-1">
+                        12/10/2024
+                      </div>
                     </div>
-                    <div className="text-[11px] text-slate-400">
-                      PEC: <strong className="text-[#475569]">amministrazione@pec.salonflow.it</strong>
-                    </div>
-                    <div className="text-[11px] text-slate-400">
-                      Recipient Code: <strong className="text-[#475569]">XXXXXXX</strong>
-                    </div>
-                    <div className="pt-1 flex flex-wrap gap-x-3 text-[11px] text-slate-400">
-                      <span>Tel: <strong className="text-[#475569]">+39 02 1234567</strong></span>
-                      <span>Email: <strong className="text-[#475569]">info@salonflow.it</strong></span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Transferee */}
-                <div className="border border-[#E2E8F0] rounded-2xl p-5 space-y-3 bg-white">
-                  <h4 className="text-[12px] font-extrabold text-[#1E293B] border-b border-slate-100 pb-2">
-                    Transferee/Client
-                  </h4>
-                  <div className="space-y-1 text-[12px] font-semibold text-[#475569]">
-                    <div className="font-extrabold text-[#1E293B] text-[13px]">
-                      Amelia Rodriguez (Ref: {selectedRowData.clientRef})
-                    </div>
-                    <div>Via Esempio, 458</div>
-                    <div>10100 Turin (TO) - Italy</div>
-                    <div className="pt-1.5 text-[11px] text-slate-400">
-                      Tax Code: <strong className="text-[#475569]">RSTGPP90A01L219Y</strong>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Service Description Table */}
-              <div className="border border-[#E2E8F0] rounded-2xl overflow-hidden bg-white">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-[#F8F9FE] border-b border-[#E2E8F0] text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider">
-                      <th className="px-5 py-3 border-r border-[#E2E8F0] w-[40%]">
-                        Service Name
-                      </th>
-                      <th className="px-5 py-3 border-r border-[#E2E8F0] text-center w-[15%]">
-                        Amount
-                      </th>
-                      <th className="px-5 py-3 border-r border-[#E2E8F0] text-right w-[15%]">
-                        Unit Price
-                      </th>
-                      <th className="px-5 py-3 border-r border-[#E2E8F0] text-center w-[15%]">
-                        VAT Rate
-                      </th>
-                      <th className="px-5 py-3 text-right w-[15%]">
-                        Total Price
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="text-[12px] font-semibold text-[#475569] border-b border-slate-100 last:border-b-0">
-                      <td className="px-5 py-4 border-r border-[#E2E8F0] font-extrabold text-[#1E293B]">
-                        Haircut (Ref: {selectedRowData.serviceRef})
-                      </td>
-                      <td className="px-5 py-4 border-r border-[#E2E8F0] text-center">
-                        1
-                      </td>
-                      <td className="px-5 py-4 border-r border-[#E2E8F0] text-right">
-                        €{taxableVal}
-                      </td>
-                      <td className="px-5 py-4 border-r border-[#E2E8F0] text-center">
-                        22%
-                      </td>
-                      <td className="px-5 py-4 text-right font-extrabold text-[#1E293B]">
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                        Amount Paid
+                      </div>
+                      <div className="text-[#1E293B] font-extrabold mt-1">
                         €{totalVal.toFixed(2)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* VAT & Totals */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* VAT Summary */}
-                <div className="border border-[#E2E8F0] rounded-2xl p-4 space-y-2 bg-white">
-                  <div className="text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider mb-2">
-                    VAT Summary
-                  </div>
-                  <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
-                    <span>Rate</span>
-                    <span>22%</span>
-                  </div>
-                  <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
-                    <span>Taxable</span>
-                    <span>€{taxableVal}</span>
-                  </div>
-                  <div className="flex justify-between text-[12px] font-semibold text-[#475569]">
-                    <span>IVA (VAT)</span>
-                    <span>€{vatVal}</span>
-                  </div>
-                </div>
-
-                {/* Document Totals */}
-                <div className="border border-[#E2E8F0] rounded-2xl p-4 space-y-2 bg-white">
-                  <div className="text-[11px] font-extrabold text-[#1E293B] uppercase tracking-wider mb-2">
-                    Document Totals
-                  </div>
-                  <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
-                    <span>Total Taxable Amount</span>
-                    <span>€{taxableVal}</span>
-                  </div>
-                  <div className="flex justify-between text-[12px] font-semibold text-[#475569] border-b border-slate-100 pb-1.5">
-                    <span>Total VAT</span>
-                    <span>€{vatVal}</span>
-                  </div>
-                  <div className="flex justify-between text-[13px] font-extrabold text-[#635BFF]">
-                    <span>Document Total</span>
-                    <span>€{totalVal.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Payment Methods */}
-              <div className="border border-[#E2E8F0] rounded-2xl p-5 bg-white space-y-3">
-                <h4 className="text-[12px] font-extrabold text-[#1E293B] border-b border-slate-100 pb-2">
-                  Payment Methods
-                </h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-[12px] font-semibold text-[#475569]">
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
-                      Mode
+                      </div>
                     </div>
-                    <div className="text-[#1E293B] font-extrabold mt-1">Credit Card</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
-                      Payment Date
-                    </div>
-                    <div className="text-[#1E293B] font-extrabold mt-1">12/10/2024</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
-                      Amount Paid
-                    </div>
-                    <div className="text-[#1E293B] font-extrabold mt-1">€{totalVal.toFixed(2)}</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
-                      Status
-                    </div>
-                    <div className="mt-1">
-                      <span className="inline-flex px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-extrabold rounded-full">
-                        Paid
-                      </span>
+                    <div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                        Status
+                      </div>
+                      <div className="mt-1">
+                        <span className="inline-flex px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-extrabold rounded-full">
+                          Paid
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Legal Notes */}
-              <div className="border border-[#E2E8F0] rounded-2xl p-5 bg-slate-50/50 space-y-2">
-                <h4 className="text-[12px] font-extrabold text-[#1E293B]">
-                  Legal Notes
-                </h4>
-                <ul className="list-disc pl-4 text-[11px] font-semibold text-[#64748B] space-y-1">
-                  <li>Invoice issued pursuant to art. 21 of Presidential Decree 26 October 1972, n. 633 and subsequent amendments.</li>
-                  <li>VAT paid by the purchaser pursuant to art. 17, paragraph 5, of Presidential Decree 26 October 1972, n. 633.</li>
-                  <li>Digitally signed electronic document pursuant to Legislative Decree 82/2005.</li>
-                  <li>Replacement storage of documents pursuant to the Ministerial Decree of 17 June 2014.</li>
-                  <li>Competent court: Milan. Applicable law: Italian.</li>
-                </ul>
-              </div>
+                {/* Legal Notes */}
+                <div className="border border-[#E2E8F0] rounded-2xl p-5 bg-slate-50/50 space-y-2">
+                  <h4 className="text-[12px] font-extrabold text-[#1E293B]">
+                    Legal Notes
+                  </h4>
+                  <ul className="list-disc pl-4 text-[11px] font-semibold text-[#64748B] space-y-1">
+                    <li>
+                      Invoice issued pursuant to art. 21 of Presidential Decree
+                      26 October 1972, n. 633 and subsequent amendments.
+                    </li>
+                    <li>
+                      VAT paid by the purchaser pursuant to art. 17, paragraph
+                      5, of Presidential Decree 26 October 1972, n. 633.
+                    </li>
+                    <li>
+                      Digitally signed electronic document pursuant to
+                      Legislative Decree 82/2005.
+                    </li>
+                    <li>
+                      Replacement storage of documents pursuant to the
+                      Ministerial Decree of 17 June 2014.
+                    </li>
+                    <li>Competent court: Milan. Applicable law: Italian.</li>
+                  </ul>
+                </div>
 
-              {/* Footer info */}
-              <div className="text-center text-[10px] font-semibold text-[#94A3B8] pt-2 border-t border-slate-100">
-                SalonFlow Srl - Via Roma, 123 - 20121 Milan (MI) - VAT number IT12345678901 - Share Capital: € 10,000.00 i.v. - REA MI-1234567 - SDI Code: XXXXXXX - www.salonflow.it
+                {/* Footer info */}
+                <div className="text-center text-[10px] font-semibold text-[#94A3B8] pt-2 border-t border-slate-100">
+                  SalonFlow Srl - Via Roma, 123 - 20121 Milan (MI) - VAT number
+                  IT12345678901 - Share Capital: € 10,000.00 i.v. - REA
+                  MI-1234567 - SDI Code: XXXXXXX - www.salonflow.it
+                </div>
               </div>
-            </div>
-          </Modal>
-        );
-      })()}
+            </Modal>
+          );
+        })()}
     </div>
   );
 }

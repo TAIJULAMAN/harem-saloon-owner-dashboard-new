@@ -6,8 +6,6 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ChevronFirst,
-  ChevronLast,
   EllipsisVertical,
   Search,
   ChevronUp,
@@ -32,7 +30,7 @@ const allAppointments: Appointment[] = [
     clientPhone: "+39 345 678 9123",
     service: "Haircut",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Booked",
   },
   {
@@ -43,7 +41,7 @@ const allAppointments: Appointment[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     service: "Haircut",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Started",
   },
   {
@@ -54,7 +52,7 @@ const allAppointments: Appointment[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     service: "Haircut",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Canceled",
   },
   {
@@ -65,7 +63,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Confirmed",
   },
   {
@@ -76,7 +74,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Arrived",
   },
   {
@@ -87,7 +85,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Completed",
   },
   {
@@ -98,7 +96,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Arrived",
   },
   {
@@ -109,7 +107,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Arrived",
   },
   {
@@ -120,7 +118,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Canceled",
   },
   {
@@ -131,7 +129,7 @@ const allAppointments: Appointment[] = [
     clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
     scheduledDate: "5 Aug 2025 (12:00 AM - 12:15 AM)",
-    price: "â‚¬ 170",
+    price: "€ 170",
     status: "Booked",
   },
 ];
@@ -149,25 +147,25 @@ const recentMembers = [
   {
     name: "Maria Rodriguez",
     phone: "+39 345 678 9123",
-    avatar:
+    clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
   },
   {
     name: "Maria Rodriguez",
     phone: "+39 345 678 9123",
-    avatar:
+    clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
   },
   {
     name: "Maria Rodriguez",
     phone: "+39 345 678 9123",
-    avatar:
+    clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
   },
   {
     name: "Maria Rodriguez",
     phone: "+39 345 678 9123",
-    avatar:
+    clientAvatar:
       "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria1&backgroundColor=fce7f3",
   },
 ];

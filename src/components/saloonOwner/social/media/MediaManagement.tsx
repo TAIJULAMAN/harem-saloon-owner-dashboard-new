@@ -1043,9 +1043,13 @@ export default function MediaManagement() {
                         className={`flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-colors
                                                     ${wizardClient === client.name ? "border-[#635BFF] bg-indigo-50/30" : "border-[#E0E6EB] hover:bg-gray-50"}`}
                       >
-                        <div className="w-12 h-12 rounded-full bg-gray-100 text-[#635BFF] flex items-center justify-center font-bold text-lg">
-                          {client.name.split(' ').map(n => n[0]).join('')}
-                        </div>
+                        <Image
+                          src={`/avatar/icon${(i % 3) + 1}.png`}
+                          alt={client.name}
+                          width={48}
+                          height={48}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
                         <div>
                           <p className="font-bold text-[#0A2540]">{client.name}</p>
                           <p className="text-xs text-gray-400">{client.email}</p>
